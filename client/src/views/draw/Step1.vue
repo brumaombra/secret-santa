@@ -1,9 +1,9 @@
 <script setup>
 import { reactive } from 'vue';
+import { useRouter } from 'vue-router';
+import validator from 'validator';
 import GlobalStore from '@/stores/store';
 import { getTranslation, setListOnCookies, actionModal, cloneObject } from '@/utils/utils';
-import validator from 'validator';
-import { useRouter } from 'vue-router';
 
 const router = useRouter();
 let modalNuovoPartecipante = reactive({});
@@ -104,10 +104,7 @@ const handleNextStepPress = () => {
                     <h2>{{ getTranslation("table.participants.heading") }}</h2>
                     <span class="badge edge-circle size-2x ml-2">{{ GlobalStore.elencoPartecipanti.length }}</span>
                 </div>
-                <button class="button style-accent open-modal" data-modal-target=".modalNuovoPartecipante"
-                    @click="clearModalNuovoPartecipante"><i class="fa-solid fa-plus mr-2"></i>{{
-                        getTranslation("button.add")
-                    }}</button>
+                <button class="button style-accent open-modal" data-modal-target=".modalNuovoPartecipante" @click="clearModalNuovoPartecipante"><i class="fa-solid fa-plus mr-2"></i>{{ getTranslation("button.add") }}</button>
             </div>
 
             <!-- Corpo tabella -->
@@ -115,8 +112,7 @@ const handleNextStepPress = () => {
                 <table class="bordered responsive-table">
                     <thead>
                         <tr>
-                            <th width="60px" class="table-cell-center">{{
-                                getTranslation("table.participants.columnNumber") }}</th>
+                            <th width="60px" class="table-cell-center">{{ getTranslation("table.participants.columnNumber") }}</th>
                             <th>{{ getTranslation("table.participants.columnName") }}</th>
                             <th>{{ getTranslation("table.participants.columnEmail") }}</th>
                             <th width="60px"></th>
@@ -126,21 +122,16 @@ const handleNextStepPress = () => {
                     <tbody>
                         <!-- Placeholder record -->
                         <tr v-if="GlobalStore.elencoPartecipanti.length === 0">
-                            <td colspan="5" class="text-center">{{
-                                getTranslation("table.participants.noParticipants") }}</td>
+                            <td colspan="5" class="text-center">{{ getTranslation("table.participants.noParticipants") }}</td>
                         </tr>
 
                         <!-- Record validi -->
-                        <tr v-if="GlobalStore.elencoPartecipanti.length > 0"
-                            v-for="(person, index) in GlobalStore.elencoPartecipanti">
+                        <tr v-if="GlobalStore.elencoPartecipanti.length > 0" v-for="(person, index) in GlobalStore.elencoPartecipanti">
                             <td class="table-cell-center bold">{{ index + 1 }}</td>
                             <td>{{ person.nome }}</td>
                             <td>{{ person.email }}</td>
-                            <td class="table-cell-center"><i
-                                    class="fa-solid fa-pen-to-square bruma-table-partecipanti-icon edit"
-                                    @click="handleModificaPartecipante(index)"></i></td>
-                            <td class="table-cell-center"><i class="fa-solid fa-trash bruma-table-partecipanti-icon delete"
-                                    @click="handleEliminaPartecipante(index)"></i></td>
+                            <td class="table-cell-center"><i class="fa-solid fa-pen-to-square bruma-table-partecipanti-icon edit" :title="getTranslation('table.participants.btnEdit')" @click="handleModificaPartecipante(index)"></i></td>
+                            <td class="table-cell-center"><i class="fa-solid fa-trash bruma-table-partecipanti-icon delete" :title="getTranslation('table.participants.btnDelete')" @click="handleEliminaPartecipante(index)"></i></td>
                         </tr>
                     </tbody>
                 </table>
@@ -149,56 +140,38 @@ const handleNextStepPress = () => {
             <!-- Navbar inferiore -->
             <div class="inline-flex flex-center justify-content-between w-100 mt-2 bruma-table-navbar navbar-table-bottom">
                 <p></p>
-                <button class="button style-accent" v-if="GlobalStore.elencoPartecipanti.length > 2"
-                    @click="handleNextStepPress">{{
-                        getTranslation("button.forward") }}<i class="fa-solid fa-arrow-right ml-2"></i></button>
-                <button class="button style-accent" v-if="!(GlobalStore.elencoPartecipanti.length > 2)" disabled>{{
-                    getTranslation("button.forward") }}<i class="fa-solid fa-arrow-right ml-2"></i></button>
+                <button class="button style-accent" v-if="GlobalStore.elencoPartecipanti.length > 2" @click="handleNextStepPress">{{ getTranslation("button.forward") }}<i class="fa-solid fa-arrow-right ml-2"></i></button>
+                <button class="button style-accent" v-if="!(GlobalStore.elencoPartecipanti.length > 2)" disabled>{{ getTranslation("button.forward") }}<i class="fa-solid fa-arrow-right ml-2"></i></button>
             </div>
         </div>
 
         <!-- Modal aggiungi -->
-        <div id="modalNuovoPartecipante" class="modal modalNuovoPartecipante" tabindex="-1"
-            aria-labelledby="modalNuovoPartecipanteTitle">
+        <div id="modalNuovoPartecipante" class="modal modalNuovoPartecipante" tabindex="-1">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 id="modalNuovoPartecipanteTitle" class="modal-title">{{ modalNuovoPartecipante.currentEdit ?
-                        getTranslation("modal.editParticipant") : getTranslation("modal.addParticipant")
-                    }}</h5>
+                    <h5 class="modal-title">{{ modalNuovoPartecipante.currentEdit ? getTranslation("modal.editParticipant") : getTranslation("modal.addParticipant") }}</h5>
                 </div>
                 <div class="modal-body">
-                    <p>{{ modalNuovoPartecipante.currentEdit ? getTranslation("modal.editParticipantInstruction") :
-                        getTranslation("modal.addParticipantInstruction") }}</p>
+                    <p>{{ modalNuovoPartecipante.currentEdit ? getTranslation("modal.editParticipantInstruction") : getTranslation("modal.addParticipantInstruction") }}</p>
 
                     <!-- Nome -->
                     <div class="mt-3">
-                        <label for="inputNome" class="form-label">{{ getTranslation("modal.participantName")
-                        }}</label>
-                        <input id="inputNome" v-model="modalNuovoPartecipante.nome" type="text" @input="validateNome"
-                            maxlength="50" class="form-control w-100"
-                            :class="{ 'is-invalid': !modalNuovoPartecipante.nomeIsValid }">
-                        <div class="help-text size-sm lbl-m-l">{{ getTranslation("modal.participantNameHelp") }}
-                        </div>
+                        <label class="form-label">{{ getTranslation("modal.participantName") }}</label>
+                        <input v-model="modalNuovoPartecipante.nome" type="text" @input="validateNome" maxlength="50" class="form-control w-100" :class="{ 'is-invalid': !modalNuovoPartecipante.nomeIsValid }" />
+                        <div class="help-text size-sm lbl-m-l">{{ getTranslation("modal.participantNameHelp") }}</div>
                     </div>
 
                     <!-- Email -->
                     <div class="mt-3">
-                        <label for="inputEmail" class="form-label">{{ getTranslation("modal.participantEmail")
-                        }}</label>
-                        <input id="inputEmail" v-model="modalNuovoPartecipante.email" type="email" @input="validateEmail"
-                            maxlength="50" class="form-control w-100"
-                            :class="{ 'is-invalid': !modalNuovoPartecipante.emailIsValid }">
-                        <div class="help-text size-sm lbl-m-l">{{ getTranslation("modal.participantEmailHelp") }}
-                        </div>
+                        <label class="form-label">{{ getTranslation("modal.participantEmail") }}</label>
+                        <input v-model="modalNuovoPartecipante.email" type="email" @input="validateEmail" maxlength="50" class="form-control w-100" :class="{ 'is-invalid': !modalNuovoPartecipante.emailIsValid }">
+                        <div class="help-text size-sm lbl-m-l">{{ getTranslation("modal.participantEmailHelp") }}</div>
                     </div>
                 </div>
                 <div class="modal-footer mb-3">
-                    <button class="button style-danger close-modal">{{ getTranslation("modal.closeButton")
-                    }}</button>
-                    <button class="button style-info" v-if="modalNuovoPartecipante.buttonSaveEnabled"
-                        @click="handleAggiungiPartecipante">{{ getTranslation("modal.saveButton") }}</button>
-                    <button class="button style-info" v-if="!modalNuovoPartecipante.buttonSaveEnabled" disabled>{{
-                        getTranslation("modal.saveButton") }}</button>
+                    <button class="button style-danger close-modal">{{ getTranslation("modal.closeButton") }}</button>
+                    <button class="button style-info" v-if="modalNuovoPartecipante.buttonSaveEnabled" @click="handleAggiungiPartecipante">{{ getTranslation("modal.saveButton") }}</button>
+                    <button class="button style-info" v-if="!modalNuovoPartecipante.buttonSaveEnabled" disabled>{{ getTranslation("modal.saveButton") }}</button>
                 </div>
             </div>
         </div>

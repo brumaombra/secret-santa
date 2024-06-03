@@ -1,5 +1,5 @@
 <script setup>
-import GlobalStore from '../stores/store';
+import SettingsModal from '@/components/SettingsModal.vue';
 import { getTranslation } from '@/utils/utils';
 </script>
 
@@ -14,35 +14,13 @@ import { getTranslation } from '@/utils/utils';
                 </li>
             </ul>
             <div class="push-right">
-                <i class="fa-solid fa-gear settings-icon open-modal" data-modal-target=".modalImpostazioni"></i>
+                <i class="fa-solid fa-gear settings-icon open-modal" data-modal-target="#settingsModal"></i>
             </div>
         </div>
     </nav>
 
-    <!-- Modal impostazioni -->
-    <div id="modalImpostazioni" class="modal modalImpostazioni" tabindex="-1" aria-labelledby="modalImpostazioniTitle">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 id="modalImpostazioniTitle" class="modal-title">{{ getTranslation("lbl.modal.settings.title") }}</h5>
-            </div>
-            <div class="modal-body">
-                <!-- Lingua -->
-                <div>
-                    <div class="inline-flex flex-center justify-content-between w-100">
-                        <label for="selectLingua" class="form-label">{{ getTranslation("lbl.language") }}</label>
-                        <img :src="`/santa/img/flags/${GlobalStore.currentLanguage}-flag.png`" class="flagIconLanguage" />
-                    </div>
-                    <select id="selectLingua" class="form-select w-100" v-model="GlobalStore.currentLanguage">
-                        <option v-for="item in GlobalStore.availableLanguages" :value="item.code">{{ item.name }}</option>
-                    </select>
-                    <div class="help-text size-sm lbl-m-l">{{ getTranslation("lbl.language.help.text") }}</div>
-                </div>
-            </div>
-            <div class="modal-footer justify-content-end mb-3">
-                <button class="button style-danger close-modal">{{ getTranslation("button.close") }}</button>
-            </div>
-        </div>
-    </div>
+    <!-- Settings modal -->
+	<SettingsModal />
 </template>
 
 <style scoped>

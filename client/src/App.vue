@@ -1,51 +1,32 @@
 <script setup>
+import { RouterView } from 'vue-router';
 import Navbar from '@/components/Navbar.vue';
 import Busy from '@/components/Busy.vue';
-import { RouterView } from 'vue-router';
 import { setAppLanguage, getListFromCookie } from '@/utils/utils';
 
-// Funzioni iniziali
+// Init functions
 setAppLanguage();
 getListFromCookie();
 </script>
 
 <template>
-	<!-- Contenitore app -->
-	<div class="mb-5 app-container">
+	<!-- App container -->
+	<div class="mb-5">
 		<!-- Navbar -->
 		<Navbar />
 
-		<!-- Container principale -->
+		<!-- Main container -->
 		<div class="container-xxl main-content-container">
 			<RouterView />
 		</div>
-
-		<!-- Busy -->
-		<Busy />
 	</div>
+
+	<!-- Busy indicator -->
+	<Busy />
 </template>
 
 <style scoped>
-@keyframes fadeIn {
-	from {
-		opacity: 0;
-	}
-
-	to {
-		opacity: 1;
-	}
-}
-
-.app-container {
-	opacity: 0;
-
-	/* Animazione fade-In */
-	animation-name: fadeIn;
-	animation-duration: 1s;
-	animation-fill-mode: forwards;
-	animation-delay: .5s;
-}
-
+/* Container app */
 .main-content-container {
 	padding-top: 2rem;
 }
