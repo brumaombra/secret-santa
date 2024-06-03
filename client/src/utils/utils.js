@@ -1,4 +1,4 @@
-import GlobalStore from "@/stores/store";
+import GlobalStore from "@/stores/global.js";
 import $ from "jquery";
 import CryptoJS from "crypto-js";
 import { useRouter } from "vue-router";
@@ -27,16 +27,13 @@ export const formatListEsclusi = (list) => {
 
 // Azione sul modal
 export const actionModal = (id, action) => {
-    const button = $("<button>", { // Creazione del pulsante
-        style: "display: none",
-        class: action === "open" ? "open-modal" : "close-modal",
-        "data-modal-target": `.${id}`
-    });
-
-    // Aggiungo il pulsante al body e lo triggero
-    $("body").append(button);
-    button.trigger("click");
-    button.remove();
+    const button = document.createElement('button');
+    button.style.display = 'none';
+    button.className = action === 'open' ? 'open-modal' : 'close-modal';
+    button.setAttribute('data-modal-target', `#${id}`);
+    document.body.appendChild(button); // Add the element to the DOM
+    button.click(); // Trigger the click event
+    document.body.removeChild(button); // Remove the element from the DOM
 };
 
 // Setto il busy

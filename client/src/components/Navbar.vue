@@ -1,6 +1,6 @@
 <script setup>
 import SettingsModal from '@/components/SettingsModal.vue';
-import { getTranslation } from '@/utils/utils';
+import { getTranslation } from '@/utils/utils.js';
 </script>
 
 <template>

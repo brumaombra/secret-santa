@@ -1,7 +1,7 @@
 <script setup>
 import { reactive } from 'vue';
-import GlobalStore from '@/stores/store';
-import { getTranslation, busy, deleteCookies, actionModal, formatListEsclusi, getBaseApiUrl, checkIfRedirect, drawPairs } from '@/utils/utils';
+import GlobalStore from '@/stores/global.js';
+import { getTranslation, busy, deleteCookies, actionModal, formatListEsclusi, getBaseApiUrl, checkIfRedirect, drawPairs } from '@/utils/utils.js';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();

@@ -1,50 +1,50 @@
 <script setup>
-import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
-import validator from 'validator';
-import GlobalStore from '@/stores/store';
-import { getTranslation, setListOnCookies, actionModal, cloneObject } from '@/utils/utils';
+import ParticipantModal from '@/components/ParticipantModal.vue';
+import Step1Store from '@/stores/step1.js';
+import GlobalStore from '@/stores/global.js';
+import { getTranslation, setListOnCookies, actionModal, cloneObject } from '@/utils/utils.js';
 
-const router = useRouter();
-let modalNuovoPartecipante = reactive({});
+const router = useRouter(); // Router
+const viewModel = Step1Store; // View model
 
 // Handler del pulsante aggiungi del dialog
 const handleAggiungiPartecipante = () => {
     let partecipante = { // Oggetto nuovo partecipante
-        nome: modalNuovoPartecipante.nome,
-        email: modalNuovoPartecipante.email
+        nome: viewModel.participantDialogModel.nome,
+        email: viewModel.participantDialogModel.email
     };
 
     // Aggiungo o modifico
-    if (modalNuovoPartecipante.currentEdit !== null) // Se l'utente sta modificando un partecipante
-        GlobalStore.elencoPartecipanti.splice(modalNuovoPartecipante.currentEdit, 1, partecipante); // Modifico record
+    if (viewModel.participantDialogModel.currentEdit !== null) // Se l'utente sta modificando un partecipante
+        GlobalStore.elencoPartecipanti.splice(viewModel.participantDialogModel.currentEdit, 1, partecipante); // Modifico record
     else // Se l'utente sta aggiungendo un nuovo partecipante
         GlobalStore.elencoPartecipanti.push(partecipante); // Aggiungo
     clearModalNuovoPartecipante(); // Svuoto modal nuovo partecipante
     setListOnCookies(); // Salvo lista su cookie
-    actionModal("modalNuovoPartecipante", "close"); // Nascondo dialog
+    actionModal("participantModal", "close"); // Nascondo dialog
 };
 
 // Elimino un partecipante dalla lista
-const handleEliminaPartecipante = (index) => {
+const handleEliminaPartecipante = index => {
     GlobalStore.elencoPartecipanti.splice(index, 1); // Elimino record
     setListOnCookies(); // Salvo lista su cookie
 };
 
 // Handler del pulsante modifica del dialog
-const handleModificaPartecipante = (index) => {
-    Object.assign(modalNuovoPartecipante, cloneObject(GlobalStore.elencoPartecipanti[index]));
-    modalNuovoPartecipante.currentEdit = index; // Flag per indicare che l'utente sta modificando un partecipante
-    modalNuovoPartecipante.nomeIsValid = true; // Flag per indicare se il nome è valido
-    modalNuovoPartecipante.emailIsValid = true; // Flag per indicare se l'email è valida
-    modalNuovoPartecipante.buttonSaveEnabled = true; // Flag per indicare se il pulsante salva è abilitato
+const handleModificaPartecipante = index => {
+    Object.assign(viewModel.participantDialogModel, cloneObject(GlobalStore.elencoPartecipanti[index]));
+    viewModel.participantDialogModel.currentEdit = index; // Flag per indicare che l'utente sta modificando un partecipante
+    viewModel.participantDialogModel.nomeIsValid = true; // Flag per indicare se il nome è valido
+    viewModel.participantDialogModel.emailIsValid = true; // Flag per indicare se l'email è valida
+    viewModel.participantDialogModel.buttonSaveEnabled = true; // Flag per indicare se il pulsante salva è abilitato
     setListOnCookies(); // Salvo lista su cookie
-    actionModal("modalNuovoPartecipante", "open"); // Nascondo dialog
+    actionModal("participantModal", "open"); // Nascondo dialog
 };
 
 // Svuoto modal nuovo partecipante
 const clearModalNuovoPartecipante = () => {
-    Object.assign(modalNuovoPartecipante, {
+    Object.assign(viewModel.participantDialogModel, {
         nome: "",
         email: "",
         nomeIsValid: false, // Flag per indicare se il nome è valido
@@ -52,18 +52,6 @@ const clearModalNuovoPartecipante = () => {
         buttonSaveEnabled: false, // Flag per indicare se il pulsante salva è abilitato
         currentEdit: null // Flag per indicare se l'utente sta modificando un partecipante o aggiungendo un nuovo partecipante
     });
-};
-
-// Valido il campo nome
-const validateNome = (event) => {
-    modalNuovoPartecipante.nomeIsValid = event.target.value.trim() ? validator.matches(event.target.value, /^[a-zA-Z0-9 ]*$/) : false; // Valido il nome
-    modalNuovoPartecipante.buttonSaveEnabled = modalNuovoPartecipante.nomeIsValid && modalNuovoPartecipante.emailIsValid; // Abilito o disabilito il pulsante salva
-};
-
-// Valido il campo email
-const validateEmail = (event) => {
-    modalNuovoPartecipante.emailIsValid = validator.isEmail(event.target.value); // Valido l'email
-    modalNuovoPartecipante.buttonSaveEnabled = modalNuovoPartecipante.nomeIsValid && modalNuovoPartecipante.emailIsValid; // Abilito o disabilito il pulsante salva
 };
 
 // Handlewr della pressione del pulsante avanti
@@ -104,7 +92,7 @@ const handleNextStepPress = () => {
                     <h2>{{ getTranslation("table.participants.heading") }}</h2>
                     <span class="badge edge-circle size-2x ml-2">{{ GlobalStore.elencoPartecipanti.length }}</span>
                 </div>
-                <button class="button style-accent open-modal" data-modal-target=".modalNuovoPartecipante" @click="clearModalNuovoPartecipante"><i class="fa-solid fa-plus mr-2"></i>{{ getTranslation("button.add") }}</button>
+                <button class="button style-accent open-modal" data-modal-target="#participantModal" @click="clearModalNuovoPartecipante"><i class="fa-solid fa-plus mr-2"></i>{{ getTranslation("button.add") }}</button>
             </div>
 
             <!-- Corpo tabella -->
@@ -138,42 +126,12 @@ const handleNextStepPress = () => {
             </div>
 
             <!-- Navbar inferiore -->
-            <div class="inline-flex flex-center justify-content-between w-100 mt-2 bruma-table-navbar navbar-table-bottom">
-                <p></p>
-                <button class="button style-accent" v-if="GlobalStore.elencoPartecipanti.length > 2" @click="handleNextStepPress">{{ getTranslation("button.forward") }}<i class="fa-solid fa-arrow-right ml-2"></i></button>
-                <button class="button style-accent" v-if="!(GlobalStore.elencoPartecipanti.length > 2)" disabled>{{ getTranslation("button.forward") }}<i class="fa-solid fa-arrow-right ml-2"></i></button>
+            <div class="inline-flex flex-center justify-content-end w-100 mt-2 bruma-table-navbar navbar-table-bottom">
+                <button class="button style-accent" :disabled="GlobalStore.elencoPartecipanti.length < 3" @click="handleNextStepPress">{{ getTranslation("button.forward") }}<i class="fa-solid fa-arrow-right ml-2"></i></button>
             </div>
         </div>
 
-        <!-- Modal aggiungi -->
-        <div id="modalNuovoPartecipante" class="modal modalNuovoPartecipante" tabindex="-1">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">{{ modalNuovoPartecipante.currentEdit ? getTranslation("modal.editParticipant") : getTranslation("modal.addParticipant") }}</h5>
-                </div>
-                <div class="modal-body">
-                    <p>{{ modalNuovoPartecipante.currentEdit ? getTranslation("modal.editParticipantInstruction") : getTranslation("modal.addParticipantInstruction") }}</p>
-
-                    <!-- Nome -->
-                    <div class="mt-3">
-                        <label class="form-label">{{ getTranslation("modal.participantName") }}</label>
-                        <input v-model="modalNuovoPartecipante.nome" type="text" @input="validateNome" maxlength="50" class="form-control w-100" :class="{ 'is-invalid': !modalNuovoPartecipante.nomeIsValid }" />
-                        <div class="help-text size-sm lbl-m-l">{{ getTranslation("modal.participantNameHelp") }}</div>
-                    </div>
-
-                    <!-- Email -->
-                    <div class="mt-3">
-                        <label class="form-label">{{ getTranslation("modal.participantEmail") }}</label>
-                        <input v-model="modalNuovoPartecipante.email" type="email" @input="validateEmail" maxlength="50" class="form-control w-100" :class="{ 'is-invalid': !modalNuovoPartecipante.emailIsValid }">
-                        <div class="help-text size-sm lbl-m-l">{{ getTranslation("modal.participantEmailHelp") }}</div>
-                    </div>
-                </div>
-                <div class="modal-footer mb-3">
-                    <button class="button style-danger close-modal">{{ getTranslation("modal.closeButton") }}</button>
-                    <button class="button style-info" v-if="modalNuovoPartecipante.buttonSaveEnabled" @click="handleAggiungiPartecipante">{{ getTranslation("modal.saveButton") }}</button>
-                    <button class="button style-info" v-if="!modalNuovoPartecipante.buttonSaveEnabled" disabled>{{ getTranslation("modal.saveButton") }}</button>
-                </div>
-            </div>
-        </div>
+        <!-- Participant modal -->
+        <ParticipantModal @savePress="handleAggiungiPartecipante" />
     </div>
 </template>

@@ -2,7 +2,7 @@
 import { RouterView } from 'vue-router';
 import Navbar from '@/components/Navbar.vue';
 import Busy from '@/components/Busy.vue';
-import { setAppLanguage, getListFromCookie } from '@/utils/utils';
+import { setAppLanguage, getListFromCookie } from '@/utils/utils.js';
 
 // Init functions
 setAppLanguage();

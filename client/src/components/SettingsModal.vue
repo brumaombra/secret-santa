@@ -1,6 +1,6 @@
 <script setup>
-import GlobalStore from '../stores/store';
-import { getTranslation } from '@/utils/utils';
+import GlobalStore from '@/stores/global.js';
+import { getTranslation } from '@/utils/utils.js';
 </script>
 
 <template>

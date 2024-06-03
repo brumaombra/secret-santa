@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted } from 'vue';
-import GlobalStore from '@/stores/store';
-import { getTranslation, formatListEsclusi, actionModal, checkIfRedirect } from '@/utils/utils';
+import GlobalStore from '@/stores/global.js';
+import { getTranslation, formatListEsclusi, actionModal, checkIfRedirect } from '@/utils/utils.js';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();

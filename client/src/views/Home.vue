@@ -1,6 +1,6 @@
 <script setup>
 import WOW from '/node_modules/wow.js/src/WOW.js';
-import { getTranslation } from '@/utils/utils';
+import { getTranslation } from '@/utils/utils.js';
 new WOW().init(); // Inizializzo WOW.js
 </script>
 
