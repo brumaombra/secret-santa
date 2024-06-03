@@ -1,8 +1,7 @@
 <script setup>
 import { reactive } from 'vue';
 import GlobalStore from '@/stores/store';
-import { getTranslation, busy, deleteCookies, actionModal, formatListEsclusi, getBaseApiUrl, checkIfRedirect } from '@/utils/utils';
-import axios from 'axios';
+import { getTranslation, busy, deleteCookies, actionModal, formatListEsclusi, getBaseApiUrl, checkIfRedirect, drawPairs } from '@/utils/utils';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
@@ -12,15 +11,28 @@ const errorModal = reactive({
 });
 
 // Handler del pulsante conferma del dialog
-const handleConfermaPress = () => {
+const handleConfermaPress = async () => {
     const globalStore = JSON.parse(JSON.stringify(GlobalStore)); // Clono l'oggetto per non creare casini
-    let object = { // Oggetto per chiamata
-        lang: globalStore.currentLanguage,
-        partecipanti: formattaPartecipanti(globalStore.elencoPartecipanti)
-    };
+    const participants = formattaPartecipanti(globalStore.elencoPartecipanti);
+    const lang = globalStore.currentLanguage;
 
     // Chiamata al backend
     busy(true); // Busy on
+    try {
+        const response = await drawPairs(participants, lang);
+        GlobalStore.successModal.message = response.message || getTranslation("modal.success.default.text"); // Messaggio di successo
+        GlobalStore.successModal.list = response.messaggeList || []; // Lista dei messaggi
+        router.push('/draw/step4'); // Avanzo lo step
+        // deleteCookies(); // Elimino i cookie
+        busy(false); // Busy off
+    } catch (error) {
+        busy(false); // Busy off
+        errorModal.message = error.response?.message || getTranslation("message.error.call"); // Messaggio di errore
+        errorModal.list = error.response?.listaMessaggi || []; // Lista messaggi di dettaglio
+        actionModal("modalMessaggiErrore", "open"); // Apro il modal
+    }
+
+    /*
     axios.post(`${getBaseApiUrl()}/api/draw.php`, object).then(response => {
         busy(false); // Busy off
         GlobalStore.successModal.message = response.data?.message || getTranslation("modal.success.default.text"); // Messaggio di successo
@@ -33,6 +45,7 @@ const handleConfermaPress = () => {
         errorModal.list = error.response?.data?.listaMessaggi || []; // Lista messaggi di dettaglio
         actionModal("modalMessaggiErrore", "open"); // Apro il modal
     });
+    */
 };
 
 // Formatto i partecipanti per la chiamata al backend
@@ -76,7 +89,8 @@ checkIfRedirect(); // Controllo se ci sono gli elementi, altrimenti redirect
                 <table class="bordered responsive-table">
                     <thead>
                         <tr>
-                            <th width="60px" class="table-cell-center">{{ getTranslation("table.participants.columnNumber")
+                            <th width="60px" class="table-cell-center">{{
+                                getTranslation("table.participants.columnNumber")
                             }}
                             </th>
                             <th>{{ getTranslation("table.participants.columnName") }}</th>
@@ -96,7 +110,8 @@ checkIfRedirect(); // Controllo se ci sono gli elementi, altrimenti redirect
             </div>
 
             <!-- Navbar inferiore -->
-            <div class="inline-flex flex-center justify-content-between w-100 mt-2 bruma-table-navbar navbar-table-bottom">
+            <div
+                class="inline-flex flex-center justify-content-between w-100 mt-2 bruma-table-navbar navbar-table-bottom">
                 <button class="button style-accent" @click="router.push('/draw/step2')"><i
                         class="fa-solid fa-arrow-left mr-2"></i>{{
                             getTranslation("button.back") }}</button>
@@ -109,7 +124,8 @@ checkIfRedirect(); // Controllo se ci sono gli elementi, altrimenti redirect
         <div class="modal modalConfermaInvio" tabindex="-1" aria-labelledby="modalConfermaInvioTitle">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 id="modalConfermaInvioTitle" class="modal-title">{{ getTranslation("modal.confirmation.title") }}
+                    <h5 id="modalConfermaInvioTitle" class="modal-title">{{ getTranslation("modal.confirmation.title")
+                        }}
                     </h5>
                 </div>
                 <div class="modal-body">
@@ -133,7 +149,8 @@ checkIfRedirect(); // Controllo se ci sono gli elementi, altrimenti redirect
                 <div class="modal-header">
                     <div class="inline-flex flex-center">
                         <i class="fa-solid fa-face-frown danger size-2x mr-2"></i>
-                        <h5 id="modalMessaggiErroreTitle" class="modal-title">{{ getTranslation("modal.error.title") }}</h5>
+                        <h5 id="modalMessaggiErroreTitle" class="modal-title">{{ getTranslation("modal.error.title") }}
+                        </h5>
                     </div>
                 </div>
                 <div class="modal-body">

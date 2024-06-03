@@ -5,6 +5,8 @@ import fs from 'fs';
 import { fileURLToPath } from 'url';
 import path from 'path';
 import cors from 'cors';
+import { drawPairs } from '../utils/draw.js';
+import { sendEmails } from '../utils/email.js';
 dotenv.config(); // Load the .env file
 
 const app = express();
@@ -16,16 +18,18 @@ app.use(express.json());
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 app.use(express.static(path.join(__dirname, '../../public')));
 
-// Get the measurements
-app.get('/api/measurements', async (req, res) => {
+// Draw the pairs
+app.post('/api/draw', (req, res) => {
+    const { lang, participants } = req.body; // Get language and participants from the request body
     try {
-        const params = req.query; // Query parameters
-        const measurements = await getMeasurements(params); // Get the measurements from the database
-        res.json({ status: 'OK', data: measurements }); // Send the response
+        const pairs = drawPairs(participants, lang); // Attempt to draw pairs
+        const messagges = sendEmails(pairs); // Send the emails
+        if (!pairs) throw new Error('Impossible to find the pairs'); // Handle case where no pairs can be drawn
+        res.json({ status: 'OK', message: 'Pairs extracted successfully', messaggeList: messagges, pairs }); // Send the successful response with the drawn pairs
     } catch (error) {
-        const errorMessage = 'Error while reading the measurements';
+        const errorMessage = error.message || 'Error while extracting the pairs';
         console.error(errorMessage, error); // Log the error
-        res.status(500).json({ status: 'KO', message: errorMessage }); // Send the error message with status
+        res.status(500).json({ status: 'KO', message: errorMessage }); // Send the error response
     }
 });
 
