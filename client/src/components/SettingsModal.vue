@@ -14,7 +14,7 @@ import { getTranslation } from '@/utils/utils.js';
                 <div>
                     <div class="inline-flex flex-center justify-content-between w-100">
                         <label class="form-label">{{ getTranslation("lbl.language") }}</label>
-                        <img :src="`/santa/img/flags/${GlobalStore.currentLanguage}-flag.png`" class="flagIconLanguage" />
+                        <img :src="`/img/flags/${GlobalStore.currentLanguage}-flag.png`" class="flagIconLanguage" />
                     </div>
                     <select class="form-select w-100" v-model="GlobalStore.currentLanguage">
                         <option v-for="item in GlobalStore.availableLanguages" :value="item.code">{{ item.name }}</option>

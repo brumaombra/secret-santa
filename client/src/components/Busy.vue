@@ -1,5 +1,4 @@
 <template>
-    <!-- Full screen busy indicator -->
     <div id="fullScreenBusy" class="fullscreen-loader">
         <div class="spinner-container">
             <span class="loading color-blue size-3x"></span>

@@ -1,5 +1,4 @@
 import GlobalStore from "@/stores/global.js";
-import $ from "jquery";
 import CryptoJS from "crypto-js";
 import { useRouter } from "vue-router";
 
@@ -37,11 +36,19 @@ export const actionModal = (id, action) => {
 };
 
 // Setto il busy
-export const busy = (busy) => {
-    if (busy)
-        $("#fullScreenBusy").fadeIn(150);
-    else
-        $("#fullScreenBusy").fadeOut(150);
+export const busy = busy => {
+    const fullScreenBusy = document.getElementById("fullScreenBusy");
+    if (!fullScreenBusy) return; // If the element is not found, do nothing
+    fullScreenBusy.style.transition = "opacity 150ms";
+    if (busy) {
+        fullScreenBusy.style.opacity = 1;
+        fullScreenBusy.style.display = "block";
+    } else {
+        fullScreenBusy.style.opacity = 0;
+        setTimeout(() => {
+            fullScreenBusy.style.display = "none";
+        }, 150);
+    }
 };
 
 // Salvo la lista degli utenti nei cookie
