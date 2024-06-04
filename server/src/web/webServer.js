@@ -23,8 +23,9 @@ app.post('/api/draw', (req, res) => {
     const { lang, participants } = req.body; // Get language and participants from the request body
     try {
         const pairs = drawPairs(participants, lang); // Attempt to draw pairs
-        const messagges = sendEmails(pairs); // Send the emails
         if (!pairs) throw new Error('Impossible to find the pairs'); // Handle case where no pairs can be drawn
+        console.log(`Extracted pairs: ${pairs}`); // Print the pairs
+        const messagges = sendEmails(pairs); // Send the emails
         res.json({ status: 'OK', message: 'Pairs extracted successfully', messaggeList: messagges, pairs }); // Send the successful response with the drawn pairs
     } catch (error) {
         const errorMessage = error.message || 'Error while extracting the pairs';
