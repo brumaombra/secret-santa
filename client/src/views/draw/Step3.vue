@@ -1,7 +1,8 @@
 <script setup>
 import { reactive } from 'vue';
 import GlobalStore from '@/stores/global.js';
-import { getTranslation, busy, deleteCookies, actionModal, formatListEsclusi, getBaseApiUrl, checkIfRedirect, drawPairs } from '@/utils/utils.js';
+import ConfirmModal from '@/components/ConfirmModal.vue';
+import { getTranslation, busy, deleteCookies, actionModal, formatListEsclusi, checkIfRedirect, drawPairs } from '@/utils/utils.js';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
@@ -49,7 +50,7 @@ const handleConfermaPress = async () => {
 };
 
 // Formatto i partecipanti per la chiamata al backend
-const formattaPartecipanti = (partecipanti) => {
+const formattaPartecipanti = partecipanti => {
     partecipanti.forEach((partecipante, index) => {
         partecipante.id = index;
         partecipante.esclusi = partecipante.esclusi ? partecipante.esclusi.filter(item => item.escluso).map(item => item.id) : []; // Rimuovo gli esclusi che non sono stati selezionati e prendo solo ID
@@ -89,10 +90,7 @@ checkIfRedirect(); // Controllo se ci sono gli elementi, altrimenti redirect
                 <table class="bordered responsive-table">
                     <thead>
                         <tr>
-                            <th width="60px" class="table-cell-center">{{
-                                getTranslation("table.participants.columnNumber")
-                            }}
-                            </th>
+                            <th width="60px" class="table-cell-center">{{ getTranslation("table.participants.columnNumber") }}</th>
                             <th>{{ getTranslation("table.participants.columnName") }}</th>
                             <th>{{ getTranslation("table.participants.columnEmail") }}</th>
                             <th>{{ getTranslation("table.participants.columnExcluded") }}</th>
@@ -110,47 +108,22 @@ checkIfRedirect(); // Controllo se ci sono gli elementi, altrimenti redirect
             </div>
 
             <!-- Navbar inferiore -->
-            <div
-                class="inline-flex flex-center justify-content-between w-100 mt-2 bruma-table-navbar navbar-table-bottom">
-                <button class="button style-accent" @click="router.push('/draw/step2')"><i
-                        class="fa-solid fa-arrow-left mr-2"></i>{{
-                            getTranslation("button.back") }}</button>
-                <button class="button style-green open-modal" data-modal-target=".modalConfermaInvio"><i
-                        class="fa-solid fa-paper-plane mr-2"></i>{{ getTranslation("button.send") }}</button>
+            <div class="inline-flex flex-center justify-content-between w-100 mt-2 bruma-table-navbar navbar-table-bottom">
+                <button class="button style-accent" @click="router.push('/draw/step2')"><i class="fa-solid fa-arrow-left mr-2"></i>{{ getTranslation("button.back") }}</button>
+                <button class="button style-green open-modal" data-modal-target="#confirmModal"><i class="fa-solid fa-paper-plane mr-2"></i>{{ getTranslation("button.send") }}</button>
             </div>
         </div>
 
         <!-- Modal conferma -->
-        <div class="modal modalConfermaInvio" tabindex="-1" aria-labelledby="modalConfermaInvioTitle">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 id="modalConfermaInvioTitle" class="modal-title">{{ getTranslation("modal.confirmation.title")
-                        }}
-                    </h5>
-                </div>
-                <div class="modal-body">
-                    <p>{{ getTranslation("modal.confirmation.body") }}</p>
-                </div>
-                <div class="modal-footer justify-content-end mb-3">
-                    <button class="button two-layer-button style-green close-modal" @click="handleConfermaPress">{{
-                        getTranslation("button.confirm") }}
-                        <span class="secondary-text">
-                            <i class="fa-solid fa-paper-plane mr-2"></i>
-                        </span>
-                    </button>
-                </div>
-            </div>
-        </div>
+        <ConfirmModal :message="getTranslation('modal.confirmation.body')" @confirm="handleConfermaPress" />
 
         <!-- Modal errore -->
-        <div id="modalMessaggiErrore" class="modal modalMessaggiErrore" tabindex="-1"
-            aria-labelledby="modalMessaggiErroreTitle">
+        <div id="modalMessaggiErrore" class="modal modalMessaggiErrore" tabindex="-1">
             <div class="modal-content">
                 <div class="modal-header">
                     <div class="inline-flex flex-center">
                         <i class="fa-solid fa-face-frown danger size-2x mr-2"></i>
-                        <h5 id="modalMessaggiErroreTitle" class="modal-title">{{ getTranslation("modal.error.title") }}
-                        </h5>
+                        <h5 class="modal-title">{{ getTranslation("modal.error.title") }}</h5>
                     </div>
                 </div>
                 <div class="modal-body">
@@ -159,8 +132,7 @@ checkIfRedirect(); // Controllo se ci sono gli elementi, altrimenti redirect
                         <div class="alert style-danger has-icon table-cell-center mb-0" role="alert">
                             <div class="alert-svg">
                                 <i class="fa-solid fa-xmark"></i>
-                            </div>
-                            {{ message.message }}
+                            </div> {{ message.message }}
                         </div>
                     </div>
                 </div>
