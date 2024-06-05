@@ -1,6 +1,7 @@
 <script setup>
 import { RouterView } from 'vue-router';
 import Navbar from '@/components/Navbar.vue';
+import MessageListModal from '@/components/MessageListModal.vue';
 import Busy from '@/components/Busy.vue';
 import { setAppLanguage, getListFromCookie } from '@/utils/utils.js';
 
@@ -20,6 +21,9 @@ getListFromCookie();
 			<RouterView />
 		</div>
 	</div>
+
+	<!-- Message list modal -->
+	<MessageListModal />
 
 	<!-- Busy indicator -->
 	<Busy />

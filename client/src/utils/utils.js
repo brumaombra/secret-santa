@@ -115,10 +115,11 @@ export const drawPairs = async (participants, lang) => {
         if (data.status === 'OK') { // Success
             return data;
         } else { // Error
-            throw new Error(data.message || 'Error while extracting the pairs');
+            const error = new Error(data.message || 'Error while extracting the pairs');
+            error.data = data; // Attach data to the error object
+            throw error;
         }
     } catch (error) {
-        const newError = new Error('Error while extracting the pairs', { cause: error }); // Save the old error to the stack
         console.error(newError); // Log the error
         throw newError; // Throw the error
     }

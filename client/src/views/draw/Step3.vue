@@ -1,15 +1,10 @@
 <script setup>
-import { reactive } from 'vue';
 import GlobalStore from '@/stores/global.js';
 import ConfirmModal from '@/components/ConfirmModal.vue';
 import { getTranslation, busy, deleteCookies, actionModal, formatListEsclusi, checkIfRedirect, drawPairs } from '@/utils/utils.js';
 import { useRouter } from 'vue-router';
 
-const router = useRouter();
-const errorModal = reactive({
-    message: "",
-    list: []
-});
+const router = useRouter(); // Router
 
 // Handler del pulsante conferma del dialog
 const handleConfermaPress = async () => {
@@ -21,32 +16,20 @@ const handleConfermaPress = async () => {
     busy(true); // Busy on
     try {
         const response = await drawPairs(participants, lang);
-        GlobalStore.successModal.message = response.message || getTranslation("modal.success.default.text"); // Messaggio di successo
-        GlobalStore.successModal.list = response.messaggeList || []; // Lista dei messaggi
+        GlobalStore.messageListDialogModel.type = "SUCCESS";
+        GlobalStore.messageListDialogModel.message = response.message || getTranslation("modal.success.default.text"); // Messaggio di successo
+        GlobalStore.messageListDialogModel.list = response.list || []; // Lista dei messaggi
         router.push('/draw/step4'); // Avanzo lo step
         // deleteCookies(); // Elimino i cookie
         busy(false); // Busy off
+        actionModal("messageListModal", "open"); // Apro il modal
     } catch (error) {
         busy(false); // Busy off
-        errorModal.message = error.response?.message || getTranslation("message.error.call"); // Messaggio di errore
-        errorModal.list = error.response?.listaMessaggi || []; // Lista messaggi di dettaglio
-        actionModal("modalMessaggiErrore", "open"); // Apro il modal
+        GlobalStore.messageListDialogModel.type = "ERROR";
+        GlobalStore.messageListDialogModel.message = error.data?.message || getTranslation("message.error.call"); // Messaggio di errore
+        GlobalStore.messageListDialogModel.list = error.data?.list || []; // Lista messaggi di dettaglio
+        actionModal("messageListModal", "open"); // Apro il modal
     }
-
-    /*
-    axios.post(`${getBaseApiUrl()}/api/draw.php`, object).then(response => {
-        busy(false); // Busy off
-        GlobalStore.successModal.message = response.data?.message || getTranslation("modal.success.default.text"); // Messaggio di successo
-        GlobalStore.successModal.list = response.data?.listaMessaggi || []; // Lista dei messaggi
-        router.push('/draw/step4'); // Avanzo lo step
-        deleteCookies(); // Elimino i cookie
-    }).catch(error => {
-        busy(false); // Busy off
-        errorModal.message = error.response?.data?.message || getTranslation("message.error.call"); // Messaggio di errore
-        errorModal.list = error.response?.data?.listaMessaggi || []; // Lista messaggi di dettaglio
-        actionModal("modalMessaggiErrore", "open"); // Apro il modal
-    });
-    */
 };
 
 // Formatto i partecipanti per la chiamata al backend
@@ -116,30 +99,5 @@ checkIfRedirect(); // Controllo se ci sono gli elementi, altrimenti redirect
 
         <!-- Modal conferma -->
         <ConfirmModal :message="getTranslation('modal.confirmation.body')" @confirm="handleConfermaPress" />
-
-        <!-- Modal errore -->
-        <div id="modalMessaggiErrore" class="modal modalMessaggiErrore" tabindex="-1">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <div class="inline-flex flex-center">
-                        <i class="fa-solid fa-face-frown danger size-2x mr-2"></i>
-                        <h5 class="modal-title">{{ getTranslation("modal.error.title") }}</h5>
-                    </div>
-                </div>
-                <div class="modal-body">
-                    <p>{{ errorModal.message }}</p>
-                    <div v-if="errorModal.list.length > 0" class="mt-3" v-for="message in errorModal.list">
-                        <div class="alert style-danger has-icon table-cell-center mb-0" role="alert">
-                            <div class="alert-svg">
-                                <i class="fa-solid fa-xmark"></i>
-                            </div> {{ message.message }}
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer justify-content-end mb-3">
-                    <button class="button style-danger close-modal">{{ getTranslation("button.close") }}</button>
-                </div>
-            </div>
-        </div>
     </div>
 </template>

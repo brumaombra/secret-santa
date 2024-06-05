@@ -8,22 +8,13 @@ import frTranslations from '@/translations/fr.json';
 export default reactive({
     elencoPartecipanti: [],
     currentLanguage: "it",
-    availableLanguages: [{ // Lingue disponibili
-        code: "it",
-        name: "Italiano"
-    }, {
-        code: "en",
-        name: "English"
-    }, {
-        code: "es",
-        name: "Español"
-    }, {
-        code: "de",
-        name: "Deutsch"
-    }, {
-        code: "fr",
-        name: "Français"
-    }],
+    availableLanguages: [ // Lingue disponibili
+        { code: "it", name: "Italiano" },
+        { code: "en", name: "English" },
+        { code: "es", name: "Español" },
+        { code: "de", name: "Deutsch" },
+        { code: "fr", name: "Français" }
+    ],
     translations: { // File traduzioni
         it: itTranslations,
         en: enTranslations,
@@ -31,7 +22,8 @@ export default reactive({
         de: deTranslations,
         fr: frTranslations
     },
-    successModal: { // Dialog di success
+    messageListDialogModel: { // Message list dialog model
+        type: "",
         message: "",
         list: []
     }
