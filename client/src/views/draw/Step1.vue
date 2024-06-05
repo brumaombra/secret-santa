@@ -10,7 +10,7 @@ const viewModel = Step1Store; // View model
 
 // Handler del pulsante aggiungi del dialog
 const handleAggiungiPartecipante = () => {
-    let partecipante = { // Oggetto nuovo partecipante
+    let partecipante = { // New participant object
         nome: viewModel.participantDialogModel.nome,
         email: viewModel.participantDialogModel.email
     };
