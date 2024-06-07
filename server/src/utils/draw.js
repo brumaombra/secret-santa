@@ -1,3 +1,5 @@
+import { CustomError } from "./utils.js";
+
 // Choose a random person from the list
 const chooseRandom = list => {
     const randomIndex = Math.floor(Math.random() * list.length);
@@ -45,7 +47,13 @@ const assignGifts = people => {
 };
 
 // Draw the pairs
-export const drawPairs = people => {
-    const peopleWithGifts = assignGifts(people);
-    return peopleWithGifts;
+export const drawPairs = (participants, labels) => {
+    try {
+        const peopleWithGifts = assignGifts(participants);
+        if (!peopleWithGifts) throw CustomError(labels['message.extraction.not.possible']);
+        return peopleWithGifts;
+    } catch (error) {
+        const errorMessage = error.isCustom ? error.message : labels['message.extraction.error'];
+        throw new CustomError(errorMessage);
+    }
 };
