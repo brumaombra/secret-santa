@@ -21,7 +21,7 @@ const viewModel = GlobalStore; // View model
             <div class="modal-body">
                 <p>{{ viewModel.messageListDialogModel.message }}</p>
                 <div class="mt-3" v-for="messageItem in viewModel.messageListDialogModel.list">
-                    <!-- Alert di successo -->
+                    <!-- Success alert -->
                     <div v-if="messageItem.code === 'SUCCESS'" class="alert style-success has-icon table-cell-center mb-0" role="alert">
                         <div class="alert-svg">
                             <i class="fa-solid fa-check"></i>
@@ -29,7 +29,7 @@ const viewModel = GlobalStore; // View model
                         {{ messageItem.message }}
                     </div>
 
-                    <!-- Alert di errore -->
+                    <!-- Error alert -->
                     <div v-if="message.code === 'ERROR'" class="alert style-danger has-icon table-cell-center mb-0" role="alert">
                         <div class="alert-svg">
                             <i class="fa-solid fa-xmark"></i>

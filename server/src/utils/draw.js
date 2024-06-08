@@ -14,7 +14,7 @@ const chooseValidRecipient = (person, list, giftsGiven) => {
 };
 
 // Assign gifts
-const assignGifts = people => {
+const assignGifts = (people, labels) => {
     let giftsGiven = [];
     let success = false;
     let count = 0;
@@ -40,7 +40,7 @@ const assignGifts = people => {
         }
 
         success = giftsGiven.length === people.length;
-        if (count > maxAttempts) return false;
+        if (count > maxAttempts) throw new CustomError(labels['message.extraction.not.possible']);
     }
 
     return people;
@@ -49,8 +49,7 @@ const assignGifts = people => {
 // Draw the pairs
 export const drawPairs = (participants, labels) => {
     try {
-        const peopleWithGifts = assignGifts(participants);
-        if (!peopleWithGifts) throw CustomError(labels['message.extraction.not.possible']);
+        const peopleWithGifts = assignGifts(participants, labels);
         return peopleWithGifts;
     } catch (error) {
         const errorMessage = error.isCustom ? error.message : labels['message.extraction.error'];

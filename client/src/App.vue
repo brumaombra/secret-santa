@@ -1,13 +1,16 @@
 <script setup>
+import { onMounted } from 'vue';
 import { RouterView } from 'vue-router';
 import Navbar from '@/components/Navbar.vue';
 import MessageListModal from '@/components/MessageListModal.vue';
 import Busy from '@/components/Busy.vue';
 import { setAppLanguage, getListFromCookie } from '@/utils/utils.js';
 
-// Init functions
-setAppLanguage();
-getListFromCookie();
+// onMounted hook
+onMounted(() => {
+	setAppLanguage(); // Set the app language
+	getListFromCookie(); // Load the data from cookies
+});
 </script>
 
 <template>

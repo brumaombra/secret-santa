@@ -2,8 +2,8 @@ import { reactive } from 'vue';
 
 export default reactive({
     excludedDialogModel: {
-        nome: "",
-        email: "",
+        nome: '',
+        email: '',
         esclusi: []
     }
 });

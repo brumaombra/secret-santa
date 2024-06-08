@@ -6,16 +6,16 @@ import { getTranslation } from '@/utils/utils.js';
 const emit = defineEmits(['savePress']); // Define emits
 const viewModel = Step1Store; // View model
 
-// Valido il campo nome
+// Validate the name field
 const validateNome = event => {
-    viewModel.participantDialogModel.nomeIsValid = event.target.value.trim() ? validator.matches(event.target.value, /^[a-zA-Z0-9 ]*$/) : false; // Valido il nome
-    viewModel.participantDialogModel.buttonSaveEnabled = viewModel.participantDialogModel.nomeIsValid && viewModel.participantDialogModel.emailIsValid; // Abilito o disabilito il pulsante salva
+    viewModel.participantDialogModel.nomeIsValid = event.target.value.trim() ? validator.matches(event.target.value, /^[a-zA-Z0-9 ]*$/) : false; // Validate name
+    viewModel.participantDialogModel.buttonSaveEnabled = viewModel.participantDialogModel.nomeIsValid && viewModel.participantDialogModel.emailIsValid; // Enable or disable the save button
 };
 
-// Valido il campo email
+// Validate the email field
 const validateEmail = event => {
-    viewModel.participantDialogModel.emailIsValid = validator.isEmail(event.target.value); // Valido l'email
-    viewModel.participantDialogModel.buttonSaveEnabled = viewModel.participantDialogModel.nomeIsValid && viewModel.participantDialogModel.emailIsValid; // Abilito o disabilito il pulsante salva
+    viewModel.participantDialogModel.emailIsValid = validator.isEmail(event.target.value); // Validate email
+    viewModel.participantDialogModel.buttonSaveEnabled = viewModel.participantDialogModel.nomeIsValid && viewModel.participantDialogModel.emailIsValid; // Enable or disable the save button
 };
 </script>
 

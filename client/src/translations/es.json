@@ -73,5 +73,11 @@
     "home.callToAction.title": "¡Ahora te toca a ti!",
     "home.callToAction.description": "¿Qué esperas? ¡Sortea también tu Amigo Invisible y sumérgete en la aventura festiva de intercambio de regalos más famosa del mundo!",
     "home.callToAction.description.2": "¡Déjate sorprender por el regalo perfecto que solo espera ser descubierto!",
-    "home.callToAction.button": "SORTEAR"
+    "home.callToAction.button": "SORTEAR",
+    "table.participants.btnEdit": "Modificar",
+    "table.participants.btnDelete": "Eliminar",
+    "message.error.extraction": "Se ha producido un error durante la extracción de pares",
+    "message.confirm.delete.participant": "¿Eliminar el participante?",
+    "pageNotFound.wrong.page": "¡Vaya! ¡La página que buscas no existe!",
+    "pageNotFound.btn.go.back": "VOLVER A LA PÁGINA PRINCIPAL"
 }

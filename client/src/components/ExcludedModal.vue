@@ -4,9 +4,9 @@ import { getTranslation, setListOnCookies } from '@/utils/utils.js';
 
 const viewModel = Step2Store; // View model
 
-// Evento alla chiusura del dialog esclusi
-const onDialogEsclusiClose = () => {
-    setListOnCookies(); // Salvo lista su cookie
+// Event on closing the excluded dialog
+const handleCloseDialogPress = () => {
+    setListOnCookies(); // Save list on cookies
 };
 </script>
 
@@ -26,7 +26,7 @@ const onDialogEsclusiClose = () => {
                 </label>
             </div>
             <div class="modal-footer justify-content-end mb-3">
-                <button class="button style-danger close-modal" @click="onDialogEsclusiClose">{{ getTranslation("button.close") }}</button>
+                <button class="button style-danger close-modal" @click="handleCloseDialogPress">{{ getTranslation("button.close") }}</button>
             </div>
         </div>
     </div>

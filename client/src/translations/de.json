@@ -73,5 +73,10 @@
     "home.callToAction.title": "Jetzt bist du dran!",
     "home.callToAction.description": "Worauf wartest du? Ziehe deinen Wichtel und tauche ein in das weltweit bekannteste festliche Geschenkaustausch-Abenteuer!",
     "home.callToAction.description.2": "Lass dich vom perfekten Geschenk überraschen, das nur darauf wartet, entdeckt zu werden!",
-    "home.callToAction.button": "ZIEHEN"
+    "table.participants.btnEdit": "Bearbeiten",
+    "table.participants.btnDelete": "Löschen",
+    "message.error.extraction": "Ein Fehler ist bei der Extraktion der Paare aufgetreten",
+    "message.confirm.delete.participant": "Teilnehmer löschen?",
+    "pageNotFound.wrong.page": "Ups! Die Seite, die Sie suchen, existiert nicht!",
+    "pageNotFound.btn.go.back": "ZURÜCK ZUR STARTSEITE"
 }

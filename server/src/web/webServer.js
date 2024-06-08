@@ -44,13 +44,11 @@ const loadLanguageData = async selectedLang => {
 };
 
 // Draw the pairs
-const drawThePairs = async (participants, lang) => {
+const drawThePairs = async (participants, labels) => {
     try {
-        const labels = await loadLanguageData(lang); // Load the language data
         validateData(participants, labels); // Validate the data
         const pairs = drawPairs(participants, labels); // Attempt to draw pairs
-
-        console.log(`Extracted pairs: ${pairs}`); // Print the pairs
+        // console.log(`Extracted pairs: ${pairs}`); // Print the pairs
         // const messagges = sendEmails(pairs); // Send the emails
         const messagges = []; // Send the emails
         return { status: 'OK', message: labels['message.extraction.success'], messaggeList: messagges, pairs };
@@ -64,7 +62,8 @@ const drawThePairs = async (participants, lang) => {
 app.post('/api/draw', async (req, res) => {
     const { lang, participants } = req.body; // Get language and participants from the request body
     try {
-        const results = await drawThePairs(participants, lang);
+        const labels = await loadLanguageData(lang); // Load the language data
+        const results = await drawThePairs(participants, labels);
         res.json(results); // Send the response with the pairs
     } catch (error) {
         const errorMessage = error.isCustom ? error.message : labels['message.extraction.error'];

@@ -1,4 +1,5 @@
 <script setup>
+import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import ExcludedModal from '@/components/ExcludedModal.vue';
 import GlobalStore from '@/stores/global.js';
@@ -8,15 +9,21 @@ import { getTranslation, formatListEsclusi, actionModal, checkIfRedirect } from 
 const router = useRouter(); // Router
 const viewModel = Step2Store; // View model
 
-// Apro il dialog per escludere i partecipanti
+// Open the dialog to exclude participants
 const handleOpenEscludiDialogPress = index => {
-    viewModel.excludedDialogModel.nome = GlobalStore.elencoPartecipanti[index].nome;
-    viewModel.excludedDialogModel.email = GlobalStore.elencoPartecipanti[index].email;
-    viewModel.excludedDialogModel.esclusi = GlobalStore.elencoPartecipanti[index].esclusi;
-    actionModal("excludedModal", "open"); // Apro il modal
+    const selected = GlobalStore.elencoPartecipanti[index];
+    Object.assign(viewModel.excludedDialogModel, {
+        nome: selected.nome,
+        email: selected.email,
+        esclusi: selected.esclusi
+    });
+    actionModal('excludedModal', 'open'); // Open the modal
 };
 
-checkIfRedirect(); // Controllo se ci sono gli elementi, altrimenti redirect
+// onMounted hook
+onMounted(() => {
+    checkIfRedirect(); // Check if there are elements, otherwise redirect
+});
 </script>
 
 <template>
@@ -32,9 +39,9 @@ checkIfRedirect(); // Controllo se ci sono gli elementi, altrimenti redirect
             <p class="mb-0">{{ getTranslation("alert.step2.instruction3") }}</p>
         </div>
 
-        <!-- Tabella partecipanti -->
+        <!-- Participants table -->
         <div class="table-responsive-margin-top">
-            <!-- Navbar tabella -->
+            <!-- Table navbar -->
             <div class="inline-flex flex-center justify-content-between w-100 mb-2 bruma-table-navbar">
                 <div class="inline-flex flex-center">
                     <h2>{{ getTranslation("table.participants.heading") }}</h2>
@@ -42,7 +49,7 @@ checkIfRedirect(); // Controllo se ci sono gli elementi, altrimenti redirect
                 </div>
             </div>
 
-            <!-- Corpo tabella -->
+            <!-- Table body -->
             <div class="responsive-table-container">
                 <table class="bordered responsive-table">
                     <thead>
@@ -66,7 +73,7 @@ checkIfRedirect(); // Controllo se ci sono gli elementi, altrimenti redirect
                 </table>
             </div>
 
-            <!-- Navbar inferiore -->
+            <!-- Bottom navbar -->
             <div class="inline-flex flex-center justify-content-between w-100 mt-2 bruma-table-navbar navbar-table-bottom">
                 <button class="button style-accent" @click="router.push('/draw/step1')"><i class="fa-solid fa-arrow-left mr-2"></i>{{ getTranslation("button.back") }}</button>
                 <button class="button style-accent" @click="router.push('/draw/step3')">{{ getTranslation("button.forward") }}<i class="fa-solid fa-arrow-right ml-2"></i></button>
