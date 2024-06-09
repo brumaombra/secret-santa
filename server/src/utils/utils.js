@@ -8,6 +8,7 @@ export class CustomError extends Error {
         super(message);
         this.name = "CustomError";
         this.isCustom = true;
+        this.messages = [];
     }
 }
 

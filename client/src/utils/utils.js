@@ -10,6 +10,7 @@ export class CustomError extends Error {
         super(message);
         this.name = 'CustomError';
         this.isCustom = true;
+        this.messages = [];
     }
 }
 
@@ -124,14 +125,14 @@ export const drawPairs = async (participants, lang) => {
             body: JSON.stringify({ participants, lang })
         });
         const data = await response.json(); // Get the data
-        if (data.status === 'OK') { // Success
+        if (response.ok) { // Success
             return data;
         } else { // Error
-            throw new CustomError(data.message || getTranslation('message.error.extraction'));
+            const customError = new CustomError(data.message || getTranslation('message.error.extraction'));
+            customError.messages = data.messaggeList || []; // Add messages to the error object
+            throw customError;
         }
     } catch (error) {
-        const errorMessage = error.isCustom ? error.message : getTranslation('message.error.extraction');
-        console.error(errorMessage, error);
-        throw new CustomError(errorMessage);
+        throw error.isCustom ? error : new CustomError(getTranslation('message.error.extraction'));
     }
 };

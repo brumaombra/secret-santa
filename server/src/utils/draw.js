@@ -52,7 +52,6 @@ export const drawPairs = (participants, labels) => {
         const peopleWithGifts = assignGifts(participants, labels);
         return peopleWithGifts;
     } catch (error) {
-        const errorMessage = error.isCustom ? error.message : labels['message.extraction.error'];
-        throw new CustomError(errorMessage);
+        throw error.isCustom ? error : new CustomError(labels['message.extraction.error']);
     }
 };

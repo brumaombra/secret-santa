@@ -30,7 +30,7 @@ const viewModel = GlobalStore; // View model
                     </div>
 
                     <!-- Error alert -->
-                    <div v-if="message.code === 'ERROR'" class="alert style-danger has-icon table-cell-center mb-0" role="alert">
+                    <div v-if="messageItem.code === 'ERROR'" class="alert style-danger has-icon table-cell-center mb-0" role="alert">
                         <div class="alert-svg">
                             <i class="fa-solid fa-xmark"></i>
                         </div>

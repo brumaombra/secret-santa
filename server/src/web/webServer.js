@@ -50,11 +50,10 @@ const drawThePairs = async (participants, labels) => {
     try {
         validateData(participants, labels); // Validate the data
         const pairs = drawPairs(participants, labels); // Attempt to draw pairs
-        const messagges = await sendEmails(pairs, labels); // Send the emails
-        return { status: 'OK', message: labels['message.extraction.success'], messaggeList: messagges };
+        const messages = await sendEmails(pairs, labels); // Send the emails
+        return { message: labels['message.extraction.success'], messaggeList: messages };
     } catch (error) {
-        const errorMessage = error.isCustom ? error.message : labels['message.extraction.error'];
-        throw new CustomError(errorMessage);
+        throw error.isCustom ? error : new CustomError(labels['message.extraction.error']);
     }
 };
 
@@ -63,19 +62,20 @@ app.post('/api/draw', async (req, res) => {
     const { lang, participants } = req.body; // Get language and participants from the request body
     try {
         const labels = await loadLanguageData(lang); // Load the language data
-        const results = await drawThePairs(participants, labels);
-        res.json(results); // Send the response with the pairs
+        const { message, messaggeList } = await drawThePairs(participants, labels);
+        res.json({ message: message, messaggeList: messaggeList }); // Send the response with the pairs
     } catch (error) {
         const errorMessage = error.isCustom ? error.message : labels['message.extraction.error'];
-        console.error(`${errorMessage}:`, error);
-        res.status(500).json({ status: 'KO', message: errorMessage }); // Send the error response
+        const messages = error.isCustom ? error.messages : [];
+        console.error(errorMessage, error);
+        res.status(500).json({ message: errorMessage, messaggeList: messages || [] }); // Send the error response
     }
 });
 
 // Middleware for handling exceptions and errors globally
 app.use((err, req, res, next) => {
     console.error(err.stack); // Log the error stack
-    res.status(500).json({ status: 'KO', message: 'Internal Server Error' });
+    res.status(500).json({ message: 'Internal Server Error' });
 });
 
 // Every other route

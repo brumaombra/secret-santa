@@ -59,9 +59,16 @@ export const sendEmails = async (pairs, labels) => {
             }
         }
 
-        return messages; // Return the messages
+        // Check if there are any error messages
+        const errorMessagePresent = messages.find(message => message.code === 'ERROR');
+        if (errorMessagePresent) {
+            const error = new CustomError(labels['message.send.email.error']);
+            error.messages = messages; // Store the messages in the error object
+            throw error;
+        } else {
+            return messages; // Return the messages
+        }
     } catch (error) {
-        const errorMessage = error.isCustom ? error.message : labels['message.send.email.error'];
-        throw new CustomError(errorMessage);
+        throw error.isCustom ? error : new CustomError(labels['message.send.email.error']);
     }
 };

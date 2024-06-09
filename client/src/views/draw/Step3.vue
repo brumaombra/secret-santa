@@ -19,7 +19,7 @@ const formatParticipants = participants => {
 };
 
 // Call the backend
-const drawPairsbackend = async (formattedParticipants, lang) => {
+const drawPairsBackend = async (formattedParticipants, lang) => {
     try {
         busy(true); // Busy on
         const response = await drawPairs(formattedParticipants, lang);
@@ -29,7 +29,7 @@ const drawPairsbackend = async (formattedParticipants, lang) => {
             setTimeout(() => {
                 router.push('/draw/step4'); // Advance the step
                 setTimeout(() => {
-                    openMessageListModal('open', 'SUCCESS', response.message || getTranslation('modal.success.default.text'), response.list); // Open the modal
+                    openMessageListModal('open', 'SUCCESS', response.message || getTranslation('modal.success.default.text'), response.list || []); // Open the modal
                 }, 250);
             }, 250);
         }, 250);
@@ -37,7 +37,7 @@ const drawPairsbackend = async (formattedParticipants, lang) => {
         setTimeout(() => { // Workaround to display dark background
             busy(false); // Busy off
             setTimeout(() => {
-                openMessageListModal('open', 'ERROR', error.message || getTranslation('message.error.extraction')); // Open the modal
+                openMessageListModal('open', 'ERROR', error.message || getTranslation('message.error.extraction'), error.messages || []); // Open the modal
             }, 250);
         }, 250);
     }
@@ -48,7 +48,7 @@ const handleConfermaPress = () => {
     const participants = cloneObject(GlobalStore.elencoPartecipanti);
     const formattedParticipants = formatParticipants(participants);
     const lang = cloneObject(GlobalStore.currentLanguage);
-    drawPairsbackend(formattedParticipants, lang); // Call the backend
+    drawPairsBackend(formattedParticipants, lang); // Call the backend
 };
 
 // onMounted hook
