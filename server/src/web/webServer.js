@@ -6,9 +6,9 @@ import { fileURLToPath } from 'url';
 import path from 'path';
 import cors from 'cors';
 import validator from 'validator';
-import { CustomError } from '../utils/utils.js';
+import { CustomError, loadFile } from '../utils/utils.js';
 import { drawPairs } from '../utils/draw.js';
-import { sendEmails } from '../utils/email.js';
+import { sendEmails } from '../email/email.js';
 dotenv.config(); // Load the .env file
 
 const app = express();
@@ -34,8 +34,10 @@ const loadLanguageData = async selectedLang => {
     try { // Import the language data
         const availableLanguages = ['en', 'it', 'de', 'es', 'fr'];
         const lang = availableLanguages.includes(selectedLang) ? selectedLang : 'en';
-        const labels = await import(`../lang/${lang}.json`, { assert: { type: 'json' } }); // Load file
-        return labels.default;
+        const fileBuffer = await loadFile(`../lang/${lang}.json`); // Load the labels data from the file
+        const fileContent = fileBuffer.toString('utf-8'); // Convert byte array to string
+        const labels = JSON.parse(fileContent); // Parse string to JSON
+        return labels;
     } catch (error) {
         const errorMessage = 'Error loading the language data';
         console.error(errorMessage, error); // Log the error
@@ -48,10 +50,8 @@ const drawThePairs = async (participants, labels) => {
     try {
         validateData(participants, labels); // Validate the data
         const pairs = drawPairs(participants, labels); // Attempt to draw pairs
-        // console.log(`Extracted pairs: ${pairs}`); // Print the pairs
-        // const messagges = sendEmails(pairs); // Send the emails
-        const messagges = []; // Send the emails
-        return { status: 'OK', message: labels['message.extraction.success'], messaggeList: messagges, pairs };
+        const messagges = await sendEmails(pairs, labels); // Send the emails
+        return { status: 'OK', message: labels['message.extraction.success'], messaggeList: messagges };
     } catch (error) {
         const errorMessage = error.isCustom ? error.message : labels['message.extraction.error'];
         throw new CustomError(errorMessage);

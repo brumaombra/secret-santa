@@ -29,8 +29,8 @@ export const setAppLanguage = () => {
 // Format the list of excluded items
 export const formatListEsclusi = list => {
     if (!list) return getTranslation('lbl.no.one'); // Exit if empty
-    const esclusi = list.filter(item => item.escluso).map(item => item.nome);
-    return esclusi.length > 0 ? esclusi.join(', ') : getTranslation('lbl.no.one');
+    const excluded = list.filter(item => item.itemExcluded).map(item => item.name);
+    return excluded.length > 0 ? excluded.join(', ') : getTranslation('lbl.no.one');
 };
 
 // Action on modal
@@ -90,7 +90,7 @@ export const deleteCookies = () => {
 // Check if elements exist, otherwise redirect
 export const checkIfRedirect = () => {
     const router = useRouter();
-    if (!(GlobalStore.elencoPartecipanti?.length >= 3 && GlobalStore.elencoPartecipanti[0]?.esclusi?.length !== undefined))
+    if (!(GlobalStore.elencoPartecipanti?.length >= 3 && GlobalStore.elencoPartecipanti[0]?.excluded?.length !== undefined))
         router.push('/draw/step1'); // Go back to the start
 };
 

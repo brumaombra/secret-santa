@@ -8,7 +8,7 @@ const chooseRandom = list => {
 
 // Pick a valid recipient
 const chooseValidRecipient = (person, list, giftsGiven) => {
-    const validRecipients = list.filter(p => !person.esclusi.includes(p.id) && !giftsGiven.includes(p.id) && p.id !== person.id && (p.recipient === null || p.recipient !== person.id));
+    const validRecipients = list.filter(p => !person.excluded.includes(p.id) && !giftsGiven.includes(p.id) && p.id !== person.id && (p.recipient === null || p.recipient !== person.id));
     if (validRecipients.length === 0) return null;
     return chooseRandom(validRecipients);
 };
@@ -19,7 +19,7 @@ const assignGifts = (people, labels) => {
     let success = false;
     let count = 0;
     const maxAttempts = 100000; // Maximum of 100,000 attempts
-    people.sort((a, b) => b.esclusi?.length - a.esclusi?.length); // Sort the list of participants based on the number of excluded
+    people.sort((a, b) => b.excluded?.length - a.excluded?.length); // Sort the list of participants based on the number of excluded
 
     // Loop until all gifts are drawn
     while (!success) {

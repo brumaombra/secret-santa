@@ -12,7 +12,7 @@ const viewModel = Step1Store; // View model
 // Handler for the add button in the dialog
 const handleSaveDialogPress = () => {
     const partecipante = { // New participant object
-        nome: viewModel.participantDialogModel.nome,
+        name: viewModel.participantDialogModel.name,
         email: viewModel.participantDialogModel.email
     };
 
@@ -43,10 +43,10 @@ const handleDeleteParticipantPress = () => {
 const handleOpenEditDialogPress = index => {
     const selected = cloneObject(GlobalStore.elencoPartecipanti[index]);
     Object.assign(viewModel.participantDialogModel, {
-        nome: selected.nome,
+        name: selected.name,
         email: selected.email,
         currentEdit: index, // Flag to indicate that the user is editing a participant
-        nomeIsValid: true, // Flag to indicate if the name is valid
+        nameIsValid: true, // Flag to indicate if the name is valid
         emailIsValid: true, // Flag to indicate if the email is valid
         buttonSaveEnabled: true // Flag to indicate if the save button is enabled
     });
@@ -57,10 +57,10 @@ const handleOpenEditDialogPress = index => {
 // Clear new participant modal
 const clearModalNuovoPartecipante = () => {
     Object.assign(viewModel.participantDialogModel, {
-        nome: '',
+        name: '',
         email: '',
         currentEdit: null, // Flag to indicate that the user is editing a participant
-        nomeIsValid: false, // Flag to indicate if the name is valid
+        nameIsValid: false, // Flag to indicate if the name is valid
         emailIsValid: false, // Flag to indicate if the email is valid
         buttonSaveEnabled: false // Flag to indicate if the save button is enabled
     });
@@ -69,9 +69,9 @@ const clearModalNuovoPartecipante = () => {
 // Add the list of excludable people
 const addExcludableList = () => {
     const participantList = cloneObject(GlobalStore.elencoPartecipanti || []);
-    const excludableList = participantList.map((item, index) => ({ id: index, nome: item.nome, escluso: false })); // Create e the list of excludable people
+    const excludableList = participantList.map((item, index) => ({ id: index, name: item.name, itemExcluded: false })); // Create e the list of excludable people
     participantList.forEach((item, index) => {
-        item.esclusi = excludableList.filter(partecipante => partecipante.id !== index); // Remove itself from the list of excludable people
+        item.excluded = excludableList.filter(partecipante => partecipante.id !== index); // Remove itself from the list of excludable people
     });
     GlobalStore.elencoPartecipanti = cloneObject(participantList); // Set the values
 };
@@ -127,7 +127,7 @@ const handleNextStepPress = () => {
                         <!-- Valid records -->
                         <tr v-if="GlobalStore.elencoPartecipanti.length > 0" v-for="(person, index) in GlobalStore.elencoPartecipanti">
                             <td class="table-cell-center bold">{{ index + 1 }}</td>
-                            <td>{{ person.nome }}</td>
+                            <td>{{ person.name }}</td>
                             <td>{{ person.email }}</td>
                             <td class="table-cell-center"><i class="fa-solid fa-pen-to-square bruma-table-partecipanti-icon edit" :title="getTranslation('table.participants.btnEdit')" @click="handleOpenEditDialogPress(index)"></i></td>
                             <td class="table-cell-center"><i class="fa-solid fa-trash bruma-table-partecipanti-icon delete" :title="getTranslation('table.participants.btnDelete')" @click="handleOpenConfirmDeleteDialogPress(index)"></i></td>

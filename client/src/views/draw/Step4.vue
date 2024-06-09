@@ -52,9 +52,9 @@ onMounted(() => {
                     <tbody>
                         <tr v-for="(person, index) in GlobalStore.elencoPartecipanti">
                             <td class="table-cell-center bold">{{ index + 1 }}</td>
-                            <td>{{ person.nome }}</td>
+                            <td>{{ person.name }}</td>
                             <td>{{ person.email }}</td>
-                            <td>{{ formatListEsclusi(person.esclusi) }}</td>
+                            <td>{{ formatListEsclusi(person.excluded) }}</td>
                         </tr>
                     </tbody>
                 </table>

@@ -20,9 +20,9 @@ const handleCloseDialogPress = () => {
                 <p>{{ getTranslation("modal.excludeParticipants.description") }}</p>
 
                 <!-- Checkbox -->
-                <label class="checkbox-wrapper" v-for="(partecipante) in viewModel.excludedDialogModel.esclusi">
-                    <input type="checkbox" v-model="partecipante.escluso" />
-                    <span class="check"></span>{{ partecipante.nome }}
+                <label class="checkbox-wrapper" v-for="(partecipante) in viewModel.excludedDialogModel.excluded">
+                    <input type="checkbox" v-model="partecipante.itemExcluded" />
+                    <span class="check"></span>{{ partecipante.name }}
                 </label>
             </div>
             <div class="modal-footer justify-content-end mb-3">

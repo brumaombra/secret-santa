@@ -13,9 +13,9 @@ const viewModel = Step2Store; // View model
 const handleOpenEscludiDialogPress = index => {
     const selected = GlobalStore.elencoPartecipanti[index];
     Object.assign(viewModel.excludedDialogModel, {
-        nome: selected.nome,
+        name: selected.name,
         email: selected.email,
-        esclusi: selected.esclusi
+        excluded: selected.excluded
     });
     actionModal('excludedModal', 'open'); // Open the modal
 };
@@ -64,9 +64,9 @@ onMounted(() => {
                     <tbody>
                         <tr v-for="(person, index) in GlobalStore.elencoPartecipanti">
                             <td class="table-cell-center bold">{{ index + 1 }}</td>
-                            <td>{{ person.nome }}</td>
+                            <td>{{ person.name }}</td>
                             <td>{{ person.email }}</td>
-                            <td>{{ formatListEsclusi(person.esclusi) }}</td>
+                            <td>{{ formatListEsclusi(person.excluded) }}</td>
                             <td class="table-cell-center"><i class="fa-solid fa-list-check bruma-table-partecipanti-icon exclude" @click="handleOpenEscludiDialogPress(index)"></i></td>
                         </tr>
                     </tbody>
