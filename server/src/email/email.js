@@ -37,7 +37,7 @@ export const sendEmails = async (pairs, labels) => {
         // Create the emails
         const messages = []; // Array to store the messages
         for (const item of pairs) { // Iterate over the pairs
-            const recipientName = pairs.find(recipient => recipient.id === item.recipient)?.name || ['error.name.not.found'];
+            const recipientName = pairs.find(recipient => recipient.id === item.recipient)?.name || labels['error.name.not.found'];
             const emailHtml = replacePlaceholders(template, item.name, recipientName, labels); // Replace the placeholders
             const mailOptions = {
                 from: 'santa@bruma.cloud',
