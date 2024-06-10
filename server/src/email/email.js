@@ -23,7 +23,7 @@ const replacePlaceholders = (template, name, recipientName, labels) => {
 // Send the emails
 export const sendEmails = async (pairs, labels) => {
     try {
-        const fileBuffer = await loadFile('../email/templates/extraction/email.html'); // Load the email template
+        const fileBuffer = await loadFile('../email/templates/extraction.html'); // Load the email template
         const template = fileBuffer.toString('utf-8'); // Convert byte array to string
 
         // Create the transporter
