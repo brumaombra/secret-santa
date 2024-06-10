@@ -1,64 +1,60 @@
 <script setup>
-import { reactive } from 'vue';
-import GlobalStore from '@/stores/global.js';
-import { getTranslation, busy, deleteCookies, actionModal, formatListEsclusi, getBaseApiUrl, checkIfRedirect, drawPairs } from '@/utils/utils.js';
+import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import ConfirmModal from '@/components/ConfirmModal.vue';
+import GlobalStore from '@/stores/global.js';
+import { getTranslation, busy, deleteCookies, formatListEsclusi, checkIfRedirect, drawPairs, cloneObject, openMessageListModal } from '@/utils/utils.js';
 
-const router = useRouter();
-const errorModal = reactive({
-    message: "",
-    list: []
-});
+const router = useRouter(); // Router
 
-// Handler del pulsante conferma del dialog
-const handleConfermaPress = async () => {
-    const globalStore = JSON.parse(JSON.stringify(GlobalStore)); // Clono l'oggetto per non creare casini
-    const participants = formattaPartecipanti(globalStore.elencoPartecipanti);
-    const lang = globalStore.currentLanguage;
+// Format participants for the backend call
+const formatParticipants = participants => {
+    participants.forEach((participant, index) => {
+        const excluded = participant.excluded ? participant.excluded.filter(item => item.itemExcluded).map(item => item.id) : []; // Remove unselected excluded participants and keep only IDs
+        participant.id = index;
+        participant.excluded = excluded;
+        participant.recipient = null;
+    });
+    return participants; // Return the formatted array
+};
 
-    // Chiamata al backend
-    busy(true); // Busy on
+// Call the backend
+const drawPairsBackend = async (formattedParticipants, lang) => {
     try {
-        const response = await drawPairs(participants, lang);
-        GlobalStore.successModal.message = response.message || getTranslation("modal.success.default.text"); // Messaggio di successo
-        GlobalStore.successModal.list = response.messaggeList || []; // Lista dei messaggi
-        router.push('/draw/step4'); // Avanzo lo step
-        // deleteCookies(); // Elimino i cookie
-        busy(false); // Busy off
+        busy(true); // Busy on
+        const response = await drawPairs(formattedParticipants, lang);
+        // deleteCookies(); // Delete cookies
+        setTimeout(() => { // Workaround to display dark background
+            busy(false); // Busy off
+            setTimeout(() => {
+                router.push('/draw/step4'); // Advance the step
+                setTimeout(() => {
+                    openMessageListModal('open', 'SUCCESS', response.message || getTranslation('modal.success.default.text'), response.list || []); // Open the modal
+                }, 250);
+            }, 250);
+        }, 250);
     } catch (error) {
-        busy(false); // Busy off
-        errorModal.message = error.response?.message || getTranslation("message.error.call"); // Messaggio di errore
-        errorModal.list = error.response?.listaMessaggi || []; // Lista messaggi di dettaglio
-        actionModal("modalMessaggiErrore", "open"); // Apro il modal
+        setTimeout(() => { // Workaround to display dark background
+            busy(false); // Busy off
+            setTimeout(() => {
+                openMessageListModal('open', 'ERROR', error.message || getTranslation('message.error.extraction'), error.messages || []); // Open the modal
+            }, 250);
+        }, 250);
     }
-
-    /*
-    axios.post(`${getBaseApiUrl()}/api/draw.php`, object).then(response => {
-        busy(false); // Busy off
-        GlobalStore.successModal.message = response.data?.message || getTranslation("modal.success.default.text"); // Messaggio di successo
-        GlobalStore.successModal.list = response.data?.listaMessaggi || []; // Lista dei messaggi
-        router.push('/draw/step4'); // Avanzo lo step
-        deleteCookies(); // Elimino i cookie
-    }).catch(error => {
-        busy(false); // Busy off
-        errorModal.message = error.response?.data?.message || getTranslation("message.error.call"); // Messaggio di errore
-        errorModal.list = error.response?.data?.listaMessaggi || []; // Lista messaggi di dettaglio
-        actionModal("modalMessaggiErrore", "open"); // Apro il modal
-    });
-    */
 };
 
-// Formatto i partecipanti per la chiamata al backend
-const formattaPartecipanti = (partecipanti) => {
-    partecipanti.forEach((partecipante, index) => {
-        partecipante.id = index;
-        partecipante.esclusi = partecipante.esclusi ? partecipante.esclusi.filter(item => item.escluso).map(item => item.id) : []; // Rimuovo gli esclusi che non sono stati selezionati e prendo solo ID
-        partecipante.destinatario = null;
-    });
-    return partecipanti; // Ritorno l'array formattato
+// Handler for the confirm button in the dialog
+const handleConfermaPress = () => {
+    const participants = cloneObject(GlobalStore.elencoPartecipanti);
+    const formattedParticipants = formatParticipants(participants);
+    const lang = cloneObject(GlobalStore.currentLanguage);
+    drawPairsBackend(formattedParticipants, lang); // Call the backend
 };
 
-checkIfRedirect(); // Controllo se ci sono gli elementi, altrimenti redirect
+// onMounted hook
+onMounted(() => {
+    checkIfRedirect(); // Check if there are elements, otherwise redirect
+});
 </script>
 
 <template>
@@ -74,9 +70,9 @@ checkIfRedirect(); // Controllo se ci sono gli elementi, altrimenti redirect
             <p class="mb-0">{{ getTranslation("alert.step3.closingRemark") }}</p>
         </div>
 
-        <!-- Tabella partecipanti -->
+        <!-- Participants table -->
         <div class="table-responsive-margin-top">
-            <!-- Navbar tabella -->
+            <!-- Table navbar -->
             <div class="inline-flex flex-center justify-content-between w-100 mb-2 bruma-table-navbar">
                 <div class="inline-flex flex-center">
                     <h2>{{ getTranslation("table.participants.summary") }}</h2>
@@ -84,15 +80,12 @@ checkIfRedirect(); // Controllo se ci sono gli elementi, altrimenti redirect
                 </div>
             </div>
 
-            <!-- Tabella -->
+            <!-- Table body -->
             <div class="responsive-table-container">
                 <table class="bordered responsive-table">
                     <thead>
                         <tr>
-                            <th width="60px" class="table-cell-center">{{
-                                getTranslation("table.participants.columnNumber")
-                            }}
-                            </th>
+                            <th width="60px" class="table-cell-center">{{ getTranslation("table.participants.columnNumber") }}</th>
                             <th>{{ getTranslation("table.participants.columnName") }}</th>
                             <th>{{ getTranslation("table.participants.columnEmail") }}</th>
                             <th>{{ getTranslation("table.participants.columnExcluded") }}</th>
@@ -101,73 +94,22 @@ checkIfRedirect(); // Controllo se ci sono gli elementi, altrimenti redirect
                     <tbody>
                         <tr v-for="(person, index) in GlobalStore.elencoPartecipanti">
                             <td class="table-cell-center bold">{{ index + 1 }}</td>
-                            <td>{{ person.nome }}</td>
+                            <td>{{ person.name }}</td>
                             <td>{{ person.email }}</td>
-                            <td>{{ formatListEsclusi(person.esclusi) }}</td>
+                            <td>{{ formatListEsclusi(person.excluded) }}</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
-            <!-- Navbar inferiore -->
-            <div
-                class="inline-flex flex-center justify-content-between w-100 mt-2 bruma-table-navbar navbar-table-bottom">
-                <button class="button style-accent" @click="router.push('/draw/step2')"><i
-                        class="fa-solid fa-arrow-left mr-2"></i>{{
-                            getTranslation("button.back") }}</button>
-                <button class="button style-green open-modal" data-modal-target=".modalConfermaInvio"><i
-                        class="fa-solid fa-paper-plane mr-2"></i>{{ getTranslation("button.send") }}</button>
+            <!-- Bottom navbar -->
+            <div class="inline-flex flex-center justify-content-between w-100 mt-2 bruma-table-navbar navbar-table-bottom">
+                <button class="button style-accent" @click="router.push('/draw/step2')"><i class="fa-solid fa-arrow-left mr-2"></i>{{ getTranslation("button.back") }}</button>
+                <button class="button style-green open-modal" data-modal-target="#confirmModalSend"><i class="fa-solid fa-paper-plane mr-2"></i>{{ getTranslation("button.send") }}</button>
             </div>
         </div>
 
-        <!-- Modal conferma -->
-        <div class="modal modalConfermaInvio" tabindex="-1" aria-labelledby="modalConfermaInvioTitle">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 id="modalConfermaInvioTitle" class="modal-title">{{ getTranslation("modal.confirmation.title")
-                        }}
-                    </h5>
-                </div>
-                <div class="modal-body">
-                    <p>{{ getTranslation("modal.confirmation.body") }}</p>
-                </div>
-                <div class="modal-footer justify-content-end mb-3">
-                    <button class="button two-layer-button style-green close-modal" @click="handleConfermaPress">{{
-                        getTranslation("button.confirm") }}
-                        <span class="secondary-text">
-                            <i class="fa-solid fa-paper-plane mr-2"></i>
-                        </span>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal errore -->
-        <div id="modalMessaggiErrore" class="modal modalMessaggiErrore" tabindex="-1"
-            aria-labelledby="modalMessaggiErroreTitle">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <div class="inline-flex flex-center">
-                        <i class="fa-solid fa-face-frown danger size-2x mr-2"></i>
-                        <h5 id="modalMessaggiErroreTitle" class="modal-title">{{ getTranslation("modal.error.title") }}
-                        </h5>
-                    </div>
-                </div>
-                <div class="modal-body">
-                    <p>{{ errorModal.message }}</p>
-                    <div v-if="errorModal.list.length > 0" class="mt-3" v-for="message in errorModal.list">
-                        <div class="alert style-danger has-icon table-cell-center mb-0" role="alert">
-                            <div class="alert-svg">
-                                <i class="fa-solid fa-xmark"></i>
-                            </div>
-                            {{ message.message }}
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer justify-content-end mb-3">
-                    <button class="button style-danger close-modal">{{ getTranslation("button.close") }}</button>
-                </div>
-            </div>
-        </div>
+        <!-- Confirm modal -->
+        <ConfirmModal id="confirmModalSend" :message="getTranslation('modal.confirmation.body')" @confirm="handleConfermaPress" />
     </div>
 </template>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Secret Santa</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Nunito', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #ffffff;
+        }
+
+        .header {
+            background: #C74D46;
+            color: #ffffff;
+            text-align: center;
+            padding: 20px 0;
+            padding-bottom: 0;
+        }
+
+        .content {
+            padding: 20px;
+            text-align: center;
+            background-color: #FFF;
+        }
+
+        .footer {
+            background: #C74D46;
+            color: #ffffff;
+            text-align: center;
+            padding: 10px 40px;
+            font-size: 12px;
+        }
+
+        .text-container {
+            background-color: #C74D46;
+            padding: 1rem;
+            width: fit-content;
+            margin: auto;
+            border-radius: 30px;
+            margin-bottom: 2rem;
+            margin-top: 2rem;
+        }
+
+        .text-container h3 {
+            color: #FFF;
+            margin: 0;
+            width: fit-content;
+            text-transform: uppercase;
+        }
+
+        .gift-gif,
+        .santa-gif {
+            width: 100%;
+        }
+
+        .receiver-name {
+            margin-top: 0;
+        }
+
+        .footer-logo-container {
+            padding: 1rem;
+        }
+
+        .footer-logo-container img {
+            width: 200px;
+        }
+
+        .email-title {
+            width: 100%;
+        }
+
+        .separator-top {
+            width: 100%;
+        }
+
+        .separator-bottom {
+            width: 100%;
+            vertical-align: bottom;
+        }
+
+        @media screen and (max-width: 600px) {
+            .container {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <img src="https://brumaombra.altervista.org/api/santa/email/email-title.png" class="email-title" />
+        </div>
+
+        <!-- Separator -->
+        <img src="https://brumaombra.altervista.org/api/santa/email/separator-top.png" class="separator-top" />
+
+        <!-- Content -->
+        <div class="content">
+            <img src="https://brumaombra.altervista.org/api/santa/email/gift.gif" class="gift-gif" />
+            <h2 class="receiver-name">{email.hi} {email.name}!</h2>
+            <p>{email.text.1}</p>
+            <p>{email.text.2}</p>
+            <div class="text-container">
+                <h3>{email.recipient}</h3>
+            </div>
+            <p>{email.text.3}</p>
+            <p>{email.text.4}</p>
+            <img src="https://brumaombra.altervista.org/api/santa/email/santa-claus.gif" class="santa-gif" />
+        </div>
+
+        <!-- Separator -->
+        <img src="https://brumaombra.altervista.org/api/santa/email/separator-bottom.png" class="separator-bottom" />
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>{email.footer.text}</p>
+            <div class="footer-logo-container">
+                <img src="https://brumaombra.altervista.org/api/santa/email/brumaombra-logo.png" />
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

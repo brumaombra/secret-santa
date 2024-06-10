@@ -1,0 +1,19 @@
+{
+    "message.required.fields": "Faltan parámetros obligatorios o no son válidos.",
+    "message.minimum.participants": "El número mínimo de participantes es 3.",
+    "message.extraction.error": "Se ha producido un error durante la extracción.",
+    "message.extraction.not.possible": "No es posible extraer todas las parejas, aumente el número de participantes o reduzca las exclusiones.",
+    "message.invalid.email": "Correo electrónico {0} no válido.",
+    "email.subject": "¡Sorteo de Secret Santa!",
+    "email.hi": "Hola",
+    "email.text.1": "¡Es el momento más mágico del año! 🌟",
+    "email.text.2": "Y has sido elegido para hacer un regalo a...",
+    "email.text.3": "Recuerda, es un secreto hasta el intercambio de regalos! 🤫",
+    "email.text.4": "¡Diviértete y felices fiestas! 🎁🎉",
+    "email.footer.text": "Este es un correo electrónico generado automáticamente para el evento Secret Santa. Tu correo electrónico no ha sido guardado.",
+    "message.read.email.template.error": "Se ha producido un error durante la creación de los correos electrónicos.",
+    "message.send.email.error": "Se ha producido un error durante el envío de los correos electrónicos.",
+    "message.email.success": "¡Correo electrónico enviado a {0} con éxito!",
+    "message.email.error": "Error al enviar el correo electrónico a {0}.",
+    "message.extraction.success": "¡Sorteo realizado con éxito!"
+}

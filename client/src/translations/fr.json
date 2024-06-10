@@ -73,5 +73,11 @@
     "home.callToAction.title": "Maintenant, c'est à vous !",
     "home.callToAction.description": "Qu'attendez-vous ? Tirez votre Secret Santa et plongez dans l'aventure d'échange de cadeaux festifs la plus célèbre au monde !",
     "home.callToAction.description.2": "Laissez-vous surprendre par le cadeau parfait qui n'attend que d'être découvert !",
-    "home.callToAction.button": "TIRER"
+    "home.callToAction.button": "TIRER",
+    "table.participants.btnEdit": "Modifier",
+    "table.participants.btnDelete": "Supprimer",
+    "message.error.extraction": "Une erreur s'est produite lors de l'extraction des paires",
+    "message.confirm.delete.participant": "Supprimer le participant ?",
+    "pageNotFound.wrong.page": "Oups ! La page que vous recherchez n'existe pas !",
+    "pageNotFound.btn.go.back": "RETOUR À L'ACCUEIL"
 }

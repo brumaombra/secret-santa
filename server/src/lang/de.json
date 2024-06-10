@@ -1,0 +1,19 @@
+{
+    "message.required.fields": "Erforderliche Parameter fehlen oder sind ungültig.",
+    "message.minimum.participants": "Die Mindestteilnehmerzahl beträgt 3.",
+    "message.extraction.error": "Beim Extrahieren ist ein Fehler aufgetreten.",
+    "message.extraction.not.possible": "Es ist nicht möglich, alle Paare zu extrahieren. Erhöhen Sie die Anzahl der Teilnehmer oder verringern Sie die Ausschlüsse.",
+    "message.invalid.email": "Ungültige E-Mail {0}.",
+    "email.subject": "Secret Santa Ziehung!",
+    "email.hi": "Hallo",
+    "email.text.1": "Es ist die magischste Zeit des Jahres! 🌟",
+    "email.text.2": "Und du wurdest ausgewählt, um ein Geschenk zu machen an...",
+    "email.text.3": "Denken Sie daran, es ist ein Geheimnis bis zum Geschenkaustausch! 🤫",
+    "email.text.4": "Viel Spaß und frohe Feiertage! 🎁🎉",
+    "email.footer.text": "Dies ist eine automatisch generierte E-Mail für das Secret Santa Event. Ihre E-Mail wurde nicht gespeichert.",
+    "message.read.email.template.error": "Beim Erstellen der E-Mails ist ein Fehler aufgetreten.",
+    "message.send.email.error": "Beim Senden der E-Mails ist ein Fehler aufgetreten.",
+    "message.email.success": "E-Mail erfolgreich an {0} gesendet!",
+    "message.email.error": "Fehler beim Senden der E-Mail an {0}.",
+    "message.extraction.success": "Ziehung erfolgreich abgeschlossen!"
+}

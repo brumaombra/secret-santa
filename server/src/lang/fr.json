@@ -1,0 +1,19 @@
+{
+    "message.required.fields": "Paramètres obligatoires manquants ou non valides.",
+    "message.minimum.participants": "Le nombre minimum de participants est de 3.",
+    "message.extraction.error": "Une erreur s'est produite lors de l'extraction.",
+    "message.extraction.not.possible": "Impossible d'extraire toutes les paires, augmentez le nombre de participants ou réduisez les exclusions.",
+    "message.invalid.email": "Email {0} non valide.",
+    "email.subject": "Tirage au sort Secret Santa !",
+    "email.hi": "Bonjour",
+    "email.text.1": "C'est le moment le plus magique de l'année ! 🌟",
+    "email.text.2": "Et vous avez été choisi pour faire un cadeau à...",
+    "email.text.3": "Rappelez-vous, c'est un secret jusqu'à l'échange des cadeaux ! 🤫",
+    "email.text.4": "Amusez-vous et bonnes fêtes ! 🎁🎉",
+    "email.footer.text": "Ceci est un email généré automatiquement pour l'événement Secret Santa. Votre email n'a pas été sauvegardé.",
+    "message.read.email.template.error": "Une erreur s'est produite lors de la création des emails.",
+    "message.send.email.error": "Une erreur s'est produite lors de l'envoi des emails.",
+    "message.email.success": "Email envoyé à {0} avec succès !",
+    "message.email.error": "Erreur lors de l'envoi de l'email à {0}.",
+    "message.extraction.success": "Tirage au sort réussi !"
+}

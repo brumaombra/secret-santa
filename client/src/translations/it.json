@@ -74,7 +74,10 @@
     "home.callToAction.description": "Cosa aspetti? Estrai anche tu il tuo Secret Santa e immergiti nell'avventura festiva di scambio regali più famosa al mondo!",
     "home.callToAction.description.2": "Lasciati sorprendere dal regalo perfetto che aspetta solo di essere scoperto!",
     "home.callToAction.button": "ESTRAI",
-    
     "table.participants.btnEdit": "Modifica",
-    "table.participants.btnDelete": "Elimina"
+    "table.participants.btnDelete": "Elimina",
+    "message.error.extraction": "Si è verificato un errore durante l'estrazione delle coppie",
+    "message.confirm.delete.participant": "Eliminare il partecipante?",
+    "pageNotFound.wrong.page": "Ops! La pagina che stai cercando non esiste!",
+    "pageNotFound.btn.go.back": "TORNA ALLA HOME"
 }
