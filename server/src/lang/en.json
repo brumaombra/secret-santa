@@ -1,0 +1,19 @@
+{
+    "message.required.fields": "Required parameters are missing or invalid.",
+    "message.minimum.participants": "The minimum number of participants is 3.",
+    "message.extraction.error": "An error occurred during the extraction.",
+    "message.extraction.not.possible": "Unable to extract all pairs, increase the number of participants or reduce the exclusions.",
+    "message.invalid.email": "Invalid email {0}.",
+    "email.subject": "Secret Santa Draw!",
+    "email.hi": "Hi",
+    "email.text.1": "It's the most magical time of the year! 🌟",
+    "email.text.2": "And you have been chosen to give a gift to...",
+    "email.text.3": "Remember, it's a secret until the gift exchange! 🤫",
+    "email.text.4": "Have fun and happy holidays! 🎁🎉",
+    "email.footer.text": "This is an automatically generated email for the Secret Santa event. Your email has not been saved.",
+    "message.read.email.template.error": "An error occurred while creating the emails.",
+    "message.send.email.error": "An error occurred while sending the emails.",
+    "message.email.success": "Email successfully sent to {0}!",
+    "message.email.error": "Error sending email to {0}.",
+    "message.extraction.success": "Draw successfully completed!"
+}
