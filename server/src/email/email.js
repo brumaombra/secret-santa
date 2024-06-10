@@ -39,14 +39,14 @@ export const sendEmails = async (pairs, labels) => {
         for (const item of pairs) { // Iterate over the pairs
             const emailHtml = replacePlaceholders(template, item.name, item.recipient, labels); // Replace the placeholders
             const mailOptions = {
-                from: 'secret-santa@bruma.cloud',
+                from: 'santa@bruma.cloud',
                 to: item.email,
                 subject: labels['email.subject'],
                 html: emailHtml
             };
 
             try {
-                const info = await transporter.sendMail(mailOptions); // Send the email
+                await transporter.sendMail(mailOptions); // Send the email
                 messages.push({
                     code: 'SUCCESS',
                     message: labels['message.email.success'].replace('{0}', item.email)
