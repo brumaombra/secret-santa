@@ -16,9 +16,10 @@ const port = 3001;
 app.use(cors());
 app.use(express.json());
 
-// Serve the public folder
+// Serve the static folders
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-app.use(express.static(path.join(__dirname, '../../public')));
+app.use(express.static(path.join(__dirname, '../../public/app'))); // The web app
+app.use('/assets', express.static(path.join(__dirname, '../../public/assets'))); // The assets for the email
 
 // Validate the input data
 const validateData = (participants, labels) => {
