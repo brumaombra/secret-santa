@@ -15,5 +15,6 @@
     "message.send.email.error": "Une erreur s'est produite lors de l'envoi des emails.",
     "message.email.success": "Email envoyé à {0} avec succès !",
     "message.email.error": "Erreur lors de l'envoi de l'email à {0}.",
-    "message.extraction.success": "Tirage au sort réussi !"
+    "message.extraction.success": "Tirage au sort réussi !",
+    "error.name.not.found": "Nom introuvable"
 }

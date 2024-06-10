@@ -15,5 +15,6 @@
     "message.send.email.error": "Si è verificato un errore durante l'invio delle email.",
     "message.email.success": "Email inviata a {0} con successo!",
     "message.email.error": "Errore nell`invio dell`email a {0}.",
-    "message.extraction.success": "Estrazione avvenuta con successo!"
+    "message.extraction.success": "Estrazione avvenuta con successo!",
+    "error.name.not.found": "Nome non trovato"
 }

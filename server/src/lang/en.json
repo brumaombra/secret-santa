@@ -15,5 +15,6 @@
     "message.send.email.error": "An error occurred while sending the emails.",
     "message.email.success": "Email successfully sent to {0}!",
     "message.email.error": "Error sending email to {0}.",
-    "message.extraction.success": "Draw successfully completed!"
+    "message.extraction.success": "Draw successfully completed!",
+    "error.name.not.found": "Name not found"
 }

@@ -23,13 +23,13 @@ const drawPairsBackend = async (formattedParticipants, lang) => {
     try {
         busy(true); // Busy on
         const response = await drawPairs(formattedParticipants, lang);
-        // deleteCookies(); // Delete cookies
+        deleteCookies(); // Delete cookies
         setTimeout(() => { // Workaround to display dark background
             busy(false); // Busy off
             setTimeout(() => {
                 router.push('/draw/step4'); // Advance the step
                 setTimeout(() => {
-                    openMessageListModal('open', 'SUCCESS', response.message || getTranslation('modal.success.default.text'), response.list || []); // Open the modal
+                    openMessageListModal('open', 'SUCCESS', response.message || getTranslation('modal.success.default.text'), response.messaggeList || []); // Open the modal
                 }, 250);
             }, 250);
         }, 250);
