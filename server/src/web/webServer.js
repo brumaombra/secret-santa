@@ -81,7 +81,7 @@ app.use((err, req, res, next) => {
 
 // Every other route
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../../public', 'index.html'));
+    res.sendFile(path.join(__dirname, '../../public/app', 'index.html'));
 });
 
 // Start the HTTPS server
