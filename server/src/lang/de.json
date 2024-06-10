@@ -15,5 +15,6 @@
     "message.send.email.error": "Beim Senden der E-Mails ist ein Fehler aufgetreten.",
     "message.email.success": "E-Mail erfolgreich an {0} gesendet!",
     "message.email.error": "Fehler beim Senden der E-Mail an {0}.",
-    "message.extraction.success": "Ziehung erfolgreich abgeschlossen!"
+    "message.extraction.success": "Ziehung erfolgreich abgeschlossen!",
+    "error.name.not.found": "Name nicht gefunden"
 }
