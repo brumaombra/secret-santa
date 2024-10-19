@@ -7,7 +7,10 @@ import validator from 'validator';
 import { CustomError, loadFile } from '../utils/utils.js';
 import { drawPairs } from '../utils/draw.js';
 import { sendEmails } from '../email/email.js';
+
+// Load the environment variables
 dotenv.config(); // Load the .env file
+if (!process.env.TEST_ENV) console.error('Error while loading the environment variables');
 
 const app = express();
 const port = 3001;
