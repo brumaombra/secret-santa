@@ -1,8 +1,6 @@
 import { useRouter } from 'vue-router';
-import GlobalStore from '@/stores/global.js';
 import CryptoJS from 'crypto-js';
-
-const devUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:3001' : 'https://bruma.cloud:3001';
+import GlobalStore from '@/stores/global.js';
 
 // Custom error class
 export class CustomError extends Error {
@@ -114,25 +112,4 @@ const decrypt = cipherText => {
 // Key and IV for encryption
 const getCryptoKey = () => {
     return 'f329d76eb570a60cc8362fa5127c1601c9c77aff618171c0e3a564d36744f8ab'; // 256-bit key
-};
-
-// Draw the pairs
-export const drawPairs = async (participants, lang) => {
-    try {
-        const response = await fetch(`${devUrl}/api/draw`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ participants, lang })
-        });
-        const data = await response.json(); // Get the data
-        if (response.ok) { // Success
-            return data;
-        } else { // Error
-            const customError = new CustomError(data.message || getTranslation('message.error.extraction'));
-            customError.messages = data.messaggeList || []; // Add messages to the error object
-            throw customError;
-        }
-    } catch (error) {
-        throw error.isCustom ? error : new CustomError(getTranslation('message.error.extraction'));
-    }
 };

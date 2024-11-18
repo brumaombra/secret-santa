@@ -1,4 +1,5 @@
-import { CustomError } from "./utils.js";
+import { CustomError, validateData } from "./utils.js";
+import { sendEmails } from "../email/email.js";
 
 // Choose a random person from the list
 const chooseRandom = list => {
@@ -47,10 +48,22 @@ const assignGifts = (people, labels) => {
 };
 
 // Draw the pairs
-export const drawPairs = (participants, labels) => {
+const drawPairs = (participants, labels) => {
     try {
         const peopleWithGifts = assignGifts(participants, labels);
         return peopleWithGifts;
+    } catch (error) {
+        throw error.isCustom ? error : new CustomError(labels['message.extraction.error']);
+    }
+};
+
+// Draw the pairs
+export const drawPairsAndSendMail = async (participants, labels) => {
+    try {
+        validateData(participants, labels); // Validate the data
+        const pairs = drawPairs(participants, labels); // Attempt to draw pairs
+        const messages = await sendEmails(pairs, labels); // Send the emails
+        return { message: labels['message.extraction.success'], messaggeList: messages };
     } catch (error) {
         throw error.isCustom ? error : new CustomError(labels['message.extraction.error']);
     }

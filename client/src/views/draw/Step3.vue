@@ -3,7 +3,8 @@ import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import ConfirmModal from '@/components/ConfirmModal.vue';
 import GlobalStore from '@/stores/global.js';
-import { getTranslation, busy, deleteCookies, formatListEsclusi, checkIfRedirect, drawPairs, cloneObject, openMessageListModal } from '@/utils/utils.js';
+import { getTranslation, busy, deleteCookies, formatListEsclusi, checkIfRedirect, cloneObject, openMessageListModal } from '@/utils/utils.js';
+import { drawPairs } from '@/utils/requests.js';
 
 const router = useRouter(); // Router
 
