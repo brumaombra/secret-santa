@@ -27,15 +27,17 @@ export const sendEmails = async (pairs, labels) => {
         const fileBuffer = await loadFile('../email/templates/extraction.html'); // Load the email template
         const template = fileBuffer.toString('utf-8'); // Convert byte array to string
 
-        /* Create the transporter
+        // Create the transporter
         const transporter = nodemailer.createTransport({
             host: 'localhost',
             port: 25,
             secure: false, // true for 465, false for other ports
-            tls: { rejectUnauthorized: false }
+            tls: {
+                rejectUnauthorized: false // Disable certificate verification
+            }
         });
-        */
 
+        /*
         try {
             // Create secure transporter
             const transporter = nodemailer.createTransport({
@@ -54,6 +56,7 @@ export const sendEmails = async (pairs, labels) => {
             console.error('SMTP Configuration Error:', error);
             throw new Error('Failed to create mail transport');
         }
+            */
 
         // Create the emails
         const messages = []; // Array to store the messages
