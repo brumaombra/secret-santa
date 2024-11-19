@@ -6,10 +6,7 @@ const devUrl = process.env.NODE_ENV === 'production' ? 'https://santa.bruma.clou
 // Axios instance
 const api = axios.create({
     baseURL: devUrl,
-    timeout: 10000,
-    headers: {
-        'Content-Type': 'application/json'
-    }
+    timeout: 10000
 });
 
 // Draw the pairs

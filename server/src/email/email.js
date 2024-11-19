@@ -1,4 +1,3 @@
-import fs from 'fs';
 import nodemailer from 'nodemailer';
 import { CustomError, loadFile } from '../utils/utils.js';
 
@@ -31,32 +30,11 @@ export const sendEmails = async (pairs, labels) => {
         const transporter = nodemailer.createTransport({
             host: 'localhost',
             port: 25,
-            secure: false, // true for 465, false for other ports
+            secure: false, // Do not use SSL (With localhost is not necessary)
             tls: {
                 rejectUnauthorized: false // Disable certificate verification
             }
         });
-
-        /*
-        try {
-            // Create secure transporter
-            const transporter = nodemailer.createTransport({
-                host: 'localhost',
-                port: 465,
-                secure: true,
-                tls: {
-                    key: fs.readFileSync('/etc/letsencrypt/live/bruma.cloud/privkey.pem'),
-                    cert: fs.readFileSync('/etc/letsencrypt/live/bruma.cloud/fullchain.pem')
-                }
-            });
-
-            // Verify connection
-            await transporter.verify();
-        } catch (error) {
-            console.error('SMTP Configuration Error:', error);
-            throw new Error('Failed to create mail transport');
-        }
-            */
 
         // Create the emails
         const messages = []; // Array to store the messages
